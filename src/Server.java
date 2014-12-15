@@ -58,6 +58,11 @@ public class Server
   }
 
 
+  /**
+   * Determining the first dealer.
+   * Method: Deal cards among the players, and the one
+   * with the most valued card will be the dealer.
+   */
   private static void determineFirstDealer()
   {
     Table.deck.shuffle();
@@ -81,7 +86,9 @@ public class Server
   }
 
 
-
+  /**
+   * Dealing cards among the players in the form of the real game.
+   */
   private static void dealCardsAmongPlayers()
   {
     for(int round = 0; round < 2; round++)
@@ -93,7 +100,8 @@ public class Server
 
   private static void getMoneyFromBlinds()
   {
-
+    Table.moveCoinsToPot(Table.smallBlindID, Table.blind.getAmount() / 2);
+    Table.moveCoinsToPot(Table.bigBlindID, Table.blind.getAmount());
   }
 
 

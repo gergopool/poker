@@ -10,8 +10,8 @@ public class Table
   public static int bigBlindID;
 
   //Coins
-  public static Coins pot;
-  public static Coins blind;
+  public static Coins pot = new Coins(0);
+  public static Coins blind = new Coins(Init.BLIND_AT_BEGINNING);
 
 
   /**
@@ -35,6 +35,18 @@ public class Table
   public static int getProperID(int currentID)
   {
     return currentID % Init.NUMBER_OF_PLAYERS;
+  }
+
+  /**
+   * Moving coins from a player to the pot.
+   *
+   * @param playerID The player's id who move's money to the pot
+   * @param theAmount The amount of coins desired to move.
+   */
+  public static void moveCoinsToPot(int playerID, int theAmount)
+  {
+    players[playerID].getCoins().subtract(theAmount);
+    pot.add(theAmount);
   }
 
   /**

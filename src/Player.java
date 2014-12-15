@@ -7,7 +7,7 @@ public class Player
   private final String name;
 
   // The player's coins he's in posession
-  private int noOfCoins;
+  private Coins coins;
 
   // The info if this player is bot or not
   private final boolean isItBot;
@@ -30,7 +30,7 @@ public class Player
     name = theName;
     isItBot = theIsItBot;
 
-    noOfCoins = Init.COINS_AT_THE_BEGINNING;
+     coins = new Coins(Init.COINS_AT_BEGINNING);
   }
 
   /**
@@ -64,6 +64,16 @@ public class Player
     return hand;
   }
 
+  /**
+   * Accessor.
+   *
+   * @return The coins.
+   */
+  public Coins getCoins()
+  {
+    return coins;
+  }
+
 
   /**
    * Set a card into the hand of the user
@@ -85,7 +95,7 @@ public class Player
   public String toString()
   {
     return String.format("%02d %-" + Init.MAX_LENGTH_OF_NAME +"s [%s, %s] (%d)",
-                          id, name, hand[0], hand[1], noOfCoins);
+                          id, name, hand[0], hand[1], coins.getAmount());
   }
 
 
