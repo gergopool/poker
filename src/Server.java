@@ -6,12 +6,12 @@
 public class Server
 {
 
-  public static void main()
+  public static void main(String[] args)
   {
     sitPlayersDown();
     determineFirstDealer();
 
-    while(!endOfGame())
+    /*while(!endOfGame())
     {
       setDeck();
       shuffleDeck();
@@ -28,15 +28,33 @@ public class Server
       }
 
       shareCoinsAmongWinners();
-    }
+    }*/
+
+    for (int i = 0; i < Init.NUMBER_OF_PLAYERS; i++)
+      System.out.println(players[i]);
 
   }//main
 
 
 
+  //The players who are currently playing
+  private static Player[] players;
+
+
+
+
+
+
+  /**
+   * This method defines some players who will play later on.
+   * In order to define a player, we need its id, name,
+   * and wheter if it is bot or not.
+   */
   private static void sitPlayersDown()
   {
-
+    players = new Player[Init.NUMBER_OF_PLAYERS];
+    for(int id = 0; id < Init.NUMBER_OF_PLAYERS; id++)
+      players[id] = new Player(id, "Name_" + id, false);
   }
 
 
