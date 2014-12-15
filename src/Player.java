@@ -12,6 +12,9 @@ public class Player
   // The info if this player is bot or not
   private final boolean isItBot;
 
+  // The cards the player has. It can be maximum 2.
+  private Card[] hand = new Card[2];
+
 
   /**
    * Constructor.
@@ -32,14 +35,26 @@ public class Player
 
 
   /**
+   * Set a card into the hand of the user
+   *
+   * @param card The card.
+   * @param place The place of the card in the user's hand (0v1)
+   */
+  public void setCard(Card card, int place)
+  {
+    hand[place] = card;
+  }
+
+
+  /**
    * Creates a readable format of the Player.
    *
    * @return The Player in String format.
    */
   public String toString()
   {
-    return String.format("%02d %-" + Init.MAX_LENGTH_OF_NAME + "s (%d)",
-                          id, name, noOfCoins);
+    return String.format("%02d %-" + Init.MAX_LENGTH_OF_NAME +"s [%s, %s] (%d)",
+                          id, name, hand[0], hand[1], noOfCoins);
   }
 
 

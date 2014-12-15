@@ -13,8 +13,9 @@ public class Server
 
     /*while(!endOfGame())
     {
-      setDeck();
-      shuffleDeck();
+      deck = new Deck();
+      deck.shuffle();
+
       dealCardsAmongPlayers();
       getMoneyFromBlinds();
 
@@ -30,6 +31,7 @@ public class Server
       shareCoinsAmongWinners();
     }*/
 
+
     for (int i = 0; i < Init.NUMBER_OF_PLAYERS; i++)
       System.out.println(players[i]);
 
@@ -39,6 +41,9 @@ public class Server
 
   //The players who are currently playing
   private static Player[] players;
+
+  //The deck
+  private static Deck deck;
 
 
 
@@ -60,6 +65,11 @@ public class Server
 
   private static void determineFirstDealer()
   {
+    deck = new Deck();
+    deck.shuffle();
+    
+    for(Player player : players)
+      player.setCard(deck.getTop(), 0);
 
   }
 
@@ -70,21 +80,10 @@ public class Server
   }
 
 
-  private static void setDeck()
-  {
-
-  }
-
-
-  private static void shuffleDeck()
-  {
-
-  }
-
 
   private static void dealCardsAmongPlayers()
   {
-
+    
   }
 
 
