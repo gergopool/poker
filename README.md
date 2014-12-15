@@ -1,4 +1,0 @@
-poker
-=====
-
-Poker game
