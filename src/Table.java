@@ -5,9 +5,9 @@ public class Table
   public static Deck deck;
 
   //Positions
-  public static Player dealer;
-  public static Player smallBlind;
-  public static Player bigBlind;
+  public static int dealerID;
+  public static int smallBlindID;
+  public static int bigBlindID;
 
   //Coins
   public static Coins pot;
@@ -20,13 +20,11 @@ public class Table
    *
    * @param theDealer The dealer.
    */
-  public static void setDealer(Player theDealer)
+  public static void setDealer(int theDealerID)
   {
-    int newDealerID = theDealer.getID();
-
-    dealer = players[newDealerID];
-    smallBlind = players[getProperID(newDealerID + 1)];
-    bigBlind = players[getProperID(newDealerID + 2)];
+    dealerID = getProperID(theDealerID);
+    smallBlindID = getProperID(dealerID + 1);
+    bigBlindID = getProperID(dealerID + 2);
   }
 
   /**
@@ -44,11 +42,7 @@ public class Table
    */
   public static void shiftDealer()
   {
-    int newDealerID = (dealer.getID() + 1);
-
-    dealer = players[getProperID(newDealerID)];
-    smallBlind = players[getProperID(newDealerID + 1)];
-    bigBlind = players[getProperID(newDealerID + 2)];
+    setDealer(dealerID + 1);
   }
 
   /**
@@ -56,9 +50,9 @@ public class Table
    */
   public static String getInfos()
   {
-    return "Dealer: " + dealer.getName() +
-           "  Small blind: " + smallBlind.getName() +
-           "  Big Blind: " + bigBlind.getName();
+    return "Dealer: " + players[dealerID].getName() +
+           "  Small blind: " + players[smallBlindID].getName() +
+           "  Big Blind: " + players[bigBlindID].getName();
   }
 
 }

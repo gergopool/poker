@@ -71,7 +71,7 @@ public class Server
                                    winner.getHand()[0].getValueForDealing())
         winner = player;
 
-    Table.setDealer(winner);
+    Table.setDealer(winner.getID());
   }
 
 
@@ -84,7 +84,10 @@ public class Server
 
   private static void dealCardsAmongPlayers()
   {
-    
+    for(int round = 0; round < 2; round++)
+      for(int adder = 1; adder <= Init.NUMBER_OF_PLAYERS; adder++)
+        Table.players[Table.getProperID(Table.dealerID + adder)]
+                                       .setCard(Table.deck.getTop(), round);
   }
 
 

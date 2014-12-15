@@ -27,6 +27,7 @@ public class Card
     rank = theRank;
   }
 
+
   /**
    * Determines the players value for being a dealer.
    *
