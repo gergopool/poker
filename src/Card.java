@@ -26,6 +26,16 @@ public class Card
     colour = theColour;
     rank = theRank;
   }
+
+  /**
+   * Determines the players value for being a dealer.
+   *
+   * @return The value.
+   */
+  public int getValueForDealing()
+  {
+    return colour * 100 + rank;
+  }
   
 
   /**
@@ -37,10 +47,10 @@ public class Card
 
     switch (colour)
     {
-      case 0 : s_card += "S"; break;
-      case 1 : s_card += "H"; break;
-      case 2 : s_card += "D"; break;
-      case 3 : s_card += "C"; break;
+      case 0 : s_card += "C"; break;
+      case 1 : s_card += "D"; break;
+      case 2 : s_card += "H"; break;
+      case 3 : s_card += "S"; break;
       default: break;
     }
 

@@ -33,6 +33,37 @@ public class Player
     noOfCoins = Init.COINS_AT_THE_BEGINNING;
   }
 
+  /**
+   * Accessor.
+   *
+   * @return The id of the player.
+   */
+  public int getID()
+  {
+    return id;
+  }
+
+
+  /**
+   * Accessor.
+   *
+   * @return The name of the player.
+   */
+  public String getName()
+  {
+    return name;
+  }
+
+  /**
+   * Accessor.
+   *
+   * @return The hand.
+   */
+  public Card[] getHand()
+  {
+    return hand;
+  }
+
 
   /**
    * Set a card into the hand of the user
