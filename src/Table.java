@@ -8,7 +8,8 @@ public class Table
   public static int dealerID;
   public static int smallBlindID;
   public static int bigBlindID;
-  public static int nextPlayerID;
+  public static int currentPlayerID;
+  public static int lastRaiserID;
 
   //Coins
   public static Coins pot = new Coins(0);
@@ -27,18 +28,21 @@ public class Table
     dealerID = getProperID(theDealerID);
     smallBlindID = getProperID(dealerID + 1);
     bigBlindID = getProperID(dealerID + 2);
-    nextPlayerID = getProperID(dealerID + 3);
+    currentPlayerID = getProperID(dealerID + 3);
+    lastRaiserID = currentPlayerID;
   }
 
 
   /**
    * Looks up who the next palyer is gonna be.
    */
-  public static void determineNextPlayerID()
+  public static int determineNextPlayerID()
   {
-    nextPlayerID = getProperID(nextPlayerID + 1);
-    if (!players[nextPlayerID].isInRound())
+    int nextID = getProperID(currentPlayerID + 1);
+    if (!players[nextID].isInRound())
       determineNextPlayerID();
+
+    return nextID;
   }
 
 
@@ -67,6 +71,7 @@ public class Table
 
   public static void askForBlinds()
   {
+    //Preparing the blinds' coins and increase the maxPreparedCoins
     players[smallBlindID].prepareCoins(blind.getAmount() / 2);
     players[bigBlindID].prepareCoins(blind.getAmount());
     maxPreparedCoins = new Coins(blind.getAmount());
@@ -76,24 +81,29 @@ public class Table
   {
     int i = 0;
     String action = "";
+    lastRaiserID = currentPlayerID;
 
-    while(!action.equals("q"))
+    do
     {
       action = Server.askForAction();
       
+      //Passing the action to the player
       switch(action.toLowerCase())
       {
-        case "check" : players[nextPlayerID].check(); break;
-        case "call"  : players[nextPlayerID].call(); break;
-        case "bet"   : players[nextPlayerID].bet(); break;
-        case "raise" : players[nextPlayerID].raise(); break;
-        case "fold"  : players[nextPlayerID].fold(); break;
+        //Cases
+        case "check" : players[currentPlayerID].check(); break;
+        case "call"  : players[currentPlayerID].call(); break;
+        case "bet"   : players[currentPlayerID].bet(); break;
+        case "raise" : players[currentPlayerID].raise(); break;
+        case "fold"  : players[currentPlayerID].fold(); break;
 
-        default : nextPlayerID--; break;
+        // This should never happen
+        default : System.out.println("WTF!"); break;
       }
 
-      determineNextPlayerID();
-    }
+      currentPlayerID = determineNextPlayerID();
+
+    } while(lastRaiserID != currentPlayerID);
   }
 
 
@@ -110,9 +120,10 @@ public class Table
    */
   public static String getInfos()
   {
+    //Dealer: name  Small blind: name  Big blind: name
     return "Dealer: " + players[dealerID].getName() +
            "  Small blind: " + players[smallBlindID].getName() +
-           "  Big Blind: " + players[bigBlindID].getName();
+           "  Big blind: " + players[bigBlindID].getName();
   }
 
 }

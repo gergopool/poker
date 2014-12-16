@@ -164,14 +164,15 @@ public class Server
 
   public static String askForAction()
   {
-    System.out.print(Table.players
-                    [Table.getProperID(Table.nextPlayerID)] + ": ");
+    Player thePlayer = Table.players[Table.getProperID(Table.currentPlayerID)];
+    System.out.print(thePlayer + ": ");
     String action = Init.INPUT_SCANNER.nextLine();
 
-
+    // Checking if the player is allowed to do the desired action
     switch(action.toLowerCase())
       {
-        case "check" : if (Table.maxPreparedCoins.getAmount() != 0)
+        case "check" : if (Table.maxPreparedCoins.getAmount()
+                              != thePlayer.getPreparedCoins().getAmount())
                        {
                           System.out.println("You cannot check now!");
                           return askForAction();
@@ -200,6 +201,7 @@ public class Server
                        break;
 
         case "fold"  : break;
+
         case "q"  : break;
 
 

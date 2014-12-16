@@ -197,6 +197,7 @@ public class Player
     preparedCoins.add(howMuchLeft + amountOfRaise);
 
     Table.maxPreparedCoins.add(amountOfRaise);
+    Table.lastRaiserID = id;
   }
 
 
@@ -206,8 +207,9 @@ public class Player
 
     coins.subtract(amountOfBet);
     preparedCoins.add(amountOfBet);
-    Table.maxPreparedCoins.add(amountOfBet);
 
+    Table.maxPreparedCoins.add(amountOfBet);
+    Table.lastRaiserID = id;
   }
 
 
