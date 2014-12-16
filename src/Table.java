@@ -12,6 +12,7 @@ public class Table
 
   //Coins
   public static Coins pot = new Coins(0);
+  public static Coins maxPreparedCoins = new Coins(0);
   public static Coins blind = new Coins(Init.BLIND_AT_BEGINNING);
 
 
@@ -59,17 +60,36 @@ public class Table
    */
   public static void moveCoinsToPot(int playerID)
   {
-    int amount = getPreparedCoins();
+    int amount = players[playerID].getPreparedCoins().getAmount();
     players[playerID].getPreparedCoins().subtract(amount);
-    pot.add(theAmount);
+    pot.add(amount);
+  }
+
+  public static void askForBlinds()
+  {
+    players[smallBlindID].prepareCoins(blind.getAmount() / 2);
+    players[bigBlindID].prepareCoins(blind.getAmount());
+    maxPreparedCoins = new Coins(blind.getAmount());
   }
 
   public static void takeBids()
   {
-    for(int i = 0; i < 5; i++)
+    int i = 0;
+    while(i < 10)
     {
       System.out.print(players[getProperID(nextPlayerID)] + ": ");
-      Init.INPUT_SCANNER.nextLine();
+      String action = Init.INPUT_SCANNER.nextLine();
+      
+      switch(action.toLowerCase())
+      {
+        case "check" : players[nextPlayerID].check(); break;
+        case "call"  : players[nextPlayerID].call(); break;
+        case "bet"   : players[nextPlayerID].bet(); break;
+        case "raise" : players[nextPlayerID].raise(); break;
+        case "fold"  : players[nextPlayerID].fold(); break;
+        default : i--; nextPlayerID--; break;
+      }
+      i++;
       determineNextPlayerID();
     }
   }

@@ -110,6 +110,31 @@ public class Player
 
 
   /**
+   * Accessor.
+   *
+   * @return The prpared coins.
+   */
+  public Coins getPreparedCoins()
+  {
+    return preparedCoins;
+  }
+
+
+  /**
+   * Moves a specific amount of coins from the ones in front of
+   * the player to the prepared ones.
+   *
+   * @param howMany The amount of coins desired to move.
+   */
+  public void prepareCoins(int howMany)
+  {
+    howMany = (howMany > coins.getAmount()) ? coins.getAmount() : howMany;
+    coins.subtract(howMany);
+    preparedCoins.add(howMany);
+  }
+
+
+  /**
    * Set a card into the hand of the user
    *
    * @param card The card.
@@ -119,6 +144,72 @@ public class Player
   {
     hand[place] = card;
   }
+
+
+  /**
+   * Action: Call
+   * The player prepare the amount of coins that is the max prepared.
+   */
+  public void call()
+  {
+    int howMuchLeft = Table.maxPreparedCoins.getAmount()
+                                                - preparedCoins.getAmount();
+
+    //NEED TO ADD
+      //The player might have less coins than the needed amount
+
+    coins.subtract(howMuchLeft);
+    preparedCoins.add(howMuchLeft);
+  }
+
+  /**
+   * Action: Check
+   * The player hand over the action.
+   */
+  public void check()
+  {
+  }
+
+  /**
+   * Action: Fold
+   * The player quits from the round.
+   */
+  public void fold()
+  {
+    inRound = false;
+  }
+
+
+  /**
+   * Action: Raise
+   * The player raise the amount of prepared money.
+   */
+  public void raise()
+  {
+    int amountOfRaise = Server.askForAmountOfRaise();
+    //First give the amount that is left and add then add the amount of raise
+    int howMuchLeft = Table.maxPreparedCoins.getAmount()
+                                                - preparedCoins.getAmount();
+    //NEED TO ADD
+      //The player might have less coins than the needed amount
+
+    coins.subtract(howMuchLeft + amountOfRaise);
+    preparedCoins.add(howMuchLeft + amountOfRaise);
+
+    Table.maxPreparedCoins.add(amountOfRaise);
+  }
+
+
+  public void bet()
+  {
+    int amountOfBet = Server.askForAmountOfRaise();
+
+    coins.subtract(amountOfBet);
+    preparedCoins.add(amountOfBet);
+    Table.maxPreparedCoins.add(amountOfBet);
+
+  }
+
 
 
   /**

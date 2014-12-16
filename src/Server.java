@@ -103,8 +103,7 @@ public class Server
 
   private static void getMoneyFromBlinds()
   {
-    Table.moveCoinsToPot(Table.smallBlindID, Table.blind.getAmount() / 2);
-    Table.moveCoinsToPot(Table.bigBlindID, Table.blind.getAmount());
+    Table.askForBlinds();
   }
 
 
@@ -138,6 +137,28 @@ public class Server
   }
 
 
+  public static int askForAmountOfRaise()
+  {
+    int amount;
+    System.out.print("Amount: ");
+    String s_amount  = Init.INPUT_SCANNER.nextLine();
+    try
+    {
+      amount = Integer.parseInt(s_amount);
+    }
+    catch(Exception e)
+    {
+      System.out.println("The amount must be an integer!");
+      amount = askForAmountOfRaise();
+    }
 
+    if(amount < Table.blind.getAmount())
+    {
+      System.out.println("The amount must be at least the blind!");
+      amount = askForAmountOfRaise();
+    } 
+
+    return amount;
+  }
 
 }
