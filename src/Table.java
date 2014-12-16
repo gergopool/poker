@@ -69,6 +69,9 @@ public class Table
     pot.add(amount);
   }
 
+  /**
+   * Prepares the blind's coins and alter the maxPreparedCoins to it.
+   */
   public static void askForBlinds()
   {
     //Preparing the blinds' coins and increase the maxPreparedCoins
@@ -77,6 +80,10 @@ public class Table
     maxPreparedCoins = new Coins(blind.getAmount());
   }
 
+  /**
+   * A round of game.
+   * It is not done until there has been no raise for a whole round.
+   */
   public static void takeBids()
   {
     int i = 0;

@@ -21,11 +21,6 @@ public class Server
       dealCardsAmongPlayers();
       getMoneyFromBlinds();
 
-      //Some infos
-      for (int i = 0; i < Init.NUMBER_OF_PLAYERS; i++)
-        System.out.println(Table.players[i]);
-      System.out.println(Table.getInfos());
-
       Table.takeBids();
 
       //while(!endOfRound())
@@ -39,6 +34,11 @@ public class Server
 
       shareCoinsAmongWinners();
     }
+
+    // Some infos to the developer. It's just not here
+    for (int i = 0; i < Init.NUMBER_OF_PLAYERS; i++)
+      System.out.println(Table.players[i]);
+    System.out.println(Table.getInfos());
 
 
   }//main
@@ -137,6 +137,13 @@ public class Server
   }
 
 
+  /**
+   * The players migh bed or raise on the pot. This method
+   * asks the player how much he desires to raise. If it is more
+   * than the coins the player has, we kick his ass. 
+   *
+   * @return The amount of raise.
+   */
   public static int askForAmountOfRaise()
   {
     int amount;
@@ -152,6 +159,8 @@ public class Server
       amount = askForAmountOfRaise();
     }
 
+    // NEED TO ADD WHAT IF HES GOT LESS COINS
+
     if(amount < Table.blind.getAmount())
     {
       System.out.println("The amount must be at least the blind!");
@@ -162,6 +171,13 @@ public class Server
   }
 
 
+  /**
+   * The players has different action when they "speak".
+   * These actions can be: bet, call, check, fold, raise.
+   * The method also handles the incompatible inputs.
+   *
+   * @return The action the player has chosen.
+   */
   public static String askForAction()
   {
     Player thePlayer = Table.players[Table.getProperID(Table.currentPlayerID)];
@@ -202,15 +218,11 @@ public class Server
 
         case "fold"  : break;
 
-        case "q"  : break;
-
 
         default : System.out.println("This is not an action!");
                   askForAction();
                   break;
       }
-
-
 
     return action;
   }
