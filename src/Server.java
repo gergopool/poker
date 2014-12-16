@@ -23,14 +23,26 @@ public class Server
 
       Table.takeBids();
 
-      //while(!endOfRound())
+      if (!Table.endOfRound())
       {
-        if (needToBurn())
-          burnCard();
-
-        showCardOnBoard();
-        //takeBids();
+        Table.showFlop();
+        Table.takeBids();
       }
+
+      if (!Table.endOfRound())
+      {
+        Table.burnCard();
+        Table.showCardOnBoard();
+        Table.takeBids();
+      }
+
+      if (!Table.endOfRound())
+      {
+        Table.burnCard();
+        Table.showCardOnBoard();
+        Table.takeBids();
+      }
+
 
       shareCoinsAmongWinners();
     }
@@ -119,15 +131,10 @@ public class Server
   }
 
 
-  private static void burnCard()
+
+  public static void showCard(Card card)
   {
-
-  }
-
-
-  private static void showCardOnBoard()
-  {
-
+    System.out.println(card);
   }
 
 
@@ -195,7 +202,8 @@ public class Server
                        }
                        break;
 
-        case "call"  : if (Table.maxPreparedCoins.getAmount() == 0)
+        case "call"  : if (Table.maxPreparedCoins.getAmount()
+                              == thePlayer.getPreparedCoins().getAmount())
                        {
                           System.out.println("You cannot call now!");
                           return askForAction();

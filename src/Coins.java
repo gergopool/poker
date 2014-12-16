@@ -38,6 +38,15 @@ public class Coins
 
 
   /**
+   * Make the number of coins 0.
+   */
+  public void erase()
+  {
+    amount = 0;
+  }
+
+
+  /**
    * Subtract some coins to the amount.
    *
    * @param howMany How many coins wished to subtract.

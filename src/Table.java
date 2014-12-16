@@ -3,6 +3,8 @@ public class Table
   //The players and the cards
   public static Player[] players;
   public static Deck deck;
+  public static Card[] board = new Card[5];
+  public static int noOfCardsOnBoard;
 
   //Positions
   public static int dealerID;
@@ -32,6 +34,30 @@ public class Table
     lastRaiserID = currentPlayerID;
   }
 
+  public static void showFlop()
+  {
+    showCardOnBoard();
+    showCardOnBoard();
+    showCardOnBoard();
+  }
+
+  public static void showCardOnBoard()
+  {
+    board[noOfCardsOnBoard] = deck.getTop();
+    Server.showCard(board[noOfCardsOnBoard]);
+    noOfCardsOnBoard++;
+  }
+
+  public static void burnCard()
+  {
+    deck.getTop();
+  }
+
+  public static boolean endOfRound()
+  {
+    return currentPlayerID == getNextPlayerID(currentPlayerID);
+  }
+
 
   /**
    * Looks up who the next palyer is gonna be.
@@ -41,6 +67,15 @@ public class Table
     currentPlayerID = getProperID(currentPlayerID + 1);
     if (!players[currentPlayerID].isInRound())
       determineNextPlayerID();
+  }
+
+  public static int getNextPlayerID(int idNow)
+  {
+    int nextID = getProperID(idNow + 1);
+    if (!players[nextID].isInRound())
+      return getNextPlayerID(nextID);
+
+    return nextID;
   }
 
 
@@ -55,16 +90,17 @@ public class Table
   }
 
   /**
-   * Moving coins from a player to the pot.
-   *
-   * @param playerID The player's id who move's money to the pot
-   * @param theAmount The amount of coins desired to move.
+   * Moving coins from players to the pot.
    */
-  public static void moveCoinsToPot(int playerID)
+  public static void moveCoinsToPot()
   {
-    int amount = players[playerID].getPreparedCoins().getAmount();
-    players[playerID].getPreparedCoins().subtract(amount);
-    pot.add(amount);
+    for (int playerID = 0; playerID < Init.NUMBER_OF_PLAYERS; playerID++)
+    {
+      int amount = players[playerID].getPreparedCoins().getAmount();
+      players[playerID].getPreparedCoins().erase();
+      pot.add(amount);
+    }
+
   }
 
   /**
@@ -86,6 +122,10 @@ public class Table
   {
     int i = 0;
     String action = "";
+    if (noOfCardsOnBoard != 0)
+    {
+      maxPreparedCoins.erase();
+    }
     lastRaiserID = currentPlayerID;
 
     do
@@ -109,6 +149,8 @@ public class Table
       determineNextPlayerID();
 
     } while(lastRaiserID != currentPlayerID);
+
+    moveCoinsToPot();
   }
 
 
