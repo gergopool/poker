@@ -161,4 +161,56 @@ public class Server
     return amount;
   }
 
+
+  public static String askForAction()
+  {
+    System.out.print(Table.players
+                    [Table.getProperID(Table.nextPlayerID)] + ": ");
+    String action = Init.INPUT_SCANNER.nextLine();
+
+
+    switch(action.toLowerCase())
+      {
+        case "check" : if (Table.maxPreparedCoins.getAmount() != 0)
+                       {
+                          System.out.println("You cannot check now!");
+                          return askForAction();
+                       }
+                       break;
+
+        case "call"  : if (Table.maxPreparedCoins.getAmount() == 0)
+                       {
+                          System.out.println("You cannot call now!");
+                          return askForAction();
+                       }
+                       break;
+
+        case "bet"   : if (Table.maxPreparedCoins.getAmount() != 0)
+                       {
+                          System.out.println("You cannot bet now!");
+                          return askForAction();
+                       }
+                       break;
+
+        case "raise" : if (Table.maxPreparedCoins.getAmount() == 0)
+                       {
+                          System.out.println("You cannot raise now!");
+                          return askForAction();
+                       }
+                       break;
+
+        case "fold"  : break;
+        case "q"  : break;
+
+
+        default : System.out.println("This is not an action!");
+                  askForAction();
+                  break;
+      }
+
+
+
+    return action;
+  }
+
 }

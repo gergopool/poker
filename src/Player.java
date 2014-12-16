@@ -219,8 +219,9 @@ public class Player
    */
   public String toString()
   {
-    return String.format("%02d %-" + Init.MAX_LENGTH_OF_NAME +"s [%s, %s] (%d)",
-                          id, name, hand[0], hand[1], coins.getAmount());
+    return String.format("%02d %-" + Init.MAX_LENGTH_OF_NAME +
+                         "s [%-4s %-4s] (%d)",
+                         id, name, hand[0], hand[1], coins.getAmount());
   }
 
 

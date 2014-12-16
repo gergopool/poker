@@ -75,10 +75,11 @@ public class Table
   public static void takeBids()
   {
     int i = 0;
-    while(i < 10)
+    String action = "";
+
+    while(!action.equals("q"))
     {
-      System.out.print(players[getProperID(nextPlayerID)] + ": ");
-      String action = Init.INPUT_SCANNER.nextLine();
+      action = Server.askForAction();
       
       switch(action.toLowerCase())
       {
@@ -87,9 +88,10 @@ public class Table
         case "bet"   : players[nextPlayerID].bet(); break;
         case "raise" : players[nextPlayerID].raise(); break;
         case "fold"  : players[nextPlayerID].fold(); break;
-        default : i--; nextPlayerID--; break;
+
+        default : nextPlayerID--; break;
       }
-      i++;
+
       determineNextPlayerID();
     }
   }
