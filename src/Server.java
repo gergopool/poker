@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 /**
  * This is the server of the poker program.
  *
@@ -5,7 +7,6 @@
  */
 public class Server
 {
-
   public static void main(String[] args)
   {
     //Basic preparaion
@@ -17,9 +18,15 @@ public class Server
     //while(!endOfGame())
     {
       Table.deck.shuffle();
-
       dealCardsAmongPlayers();
       getMoneyFromBlinds();
+
+      //Some infos
+      for (int i = 0; i < Init.NUMBER_OF_PLAYERS; i++)
+        System.out.println(Table.players[i]);
+      System.out.println(Table.getInfos());
+
+      Table.takeBids();
 
       //while(!endOfRound())
       {
@@ -27,16 +34,12 @@ public class Server
           burnCard();
 
         showCardOnBoard();
-        takeBids();
+        //takeBids();
       }
 
       shareCoinsAmongWinners();
     }
 
-    //Some infos
-    for (int i = 0; i < Init.NUMBER_OF_PLAYERS; i++)
-      System.out.println(Table.players[i]);
-    System.out.println(Table.getInfos());
 
   }//main
 
@@ -104,6 +107,16 @@ public class Server
     Table.moveCoinsToPot(Table.bigBlindID, Table.blind.getAmount());
   }
 
+  private static void takeBids()
+  {
+    for(int i = 0; i < 5; i++)
+    {
+      System.out.print(Table.players[Table.getProperID(Table.nextPlayerID)] + ": ");
+      Init.INPUT_SCANNER.nextLine();
+      Table.determineNextPlayerID();
+    }
+  }
+
 
   private static boolean endOfRound()
   {
@@ -124,12 +137,6 @@ public class Server
 
 
   private static void showCardOnBoard()
-  {
-
-  }
-
-
-  private static void takeBids()
   {
 
   }

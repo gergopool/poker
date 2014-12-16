@@ -8,6 +8,7 @@ public class Table
   public static int dealerID;
   public static int smallBlindID;
   public static int bigBlindID;
+  public static int nextPlayerID;
 
   //Coins
   public static Coins pot = new Coins(0);
@@ -25,7 +26,20 @@ public class Table
     dealerID = getProperID(theDealerID);
     smallBlindID = getProperID(dealerID + 1);
     bigBlindID = getProperID(dealerID + 2);
+    nextPlayerID = getProperID(dealerID + 3);
   }
+
+
+  /**
+   * Looks up who the next palyer is gonna be.
+   */
+  public static void determineNextPlayerID()
+  {
+    nextPlayerID = getProperID(nextPlayerID + 1);
+    if (!players[nextPlayerID].isInRound())
+      determineNextPlayerID();
+  }
+
 
   /**
    * For over Bound execption, we determine the proper id of a big id.
@@ -43,11 +57,23 @@ public class Table
    * @param playerID The player's id who move's money to the pot
    * @param theAmount The amount of coins desired to move.
    */
-  public static void moveCoinsToPot(int playerID, int theAmount)
+  public static void moveCoinsToPot(int playerID)
   {
-    players[playerID].getCoins().subtract(theAmount);
+    int amount = getPreparedCoins();
+    players[playerID].getPreparedCoins().subtract(amount);
     pot.add(theAmount);
   }
+
+  public static void takeBids()
+  {
+    for(int i = 0; i < 5; i++)
+    {
+      System.out.print(players[getProperID(nextPlayerID)] + ": ");
+      Init.INPUT_SCANNER.nextLine();
+      determineNextPlayerID();
+    }
+  }
+
 
   /**
    * Shifts the dealer button.

@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Init
 {
 
@@ -12,4 +14,7 @@ public class Init
 
   //The maximum length of a name
   public static int MAX_LENGTH_OF_NAME = 7;
+
+  //An input scanner
+  public static Scanner INPUT_SCANNER = new Scanner(System.in);
 }

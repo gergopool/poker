@@ -7,7 +7,10 @@ public class Player
   private final String name;
 
   // The player's coins he's in posession
-  private Coins coins;
+  private Coins coins = new Coins(Init.COINS_AT_BEGINNING);
+
+  // The player's coins he prepared for giving to the pot
+  private Coins preparedCoins = new Coins(0);
 
   // The info if this player is bot or not
   private final boolean isItBot;
@@ -15,10 +18,12 @@ public class Player
   // The cards the player has. It can be maximum 2.
   private Card[] hand = new Card[2];
 
+  //Activity in the current round
+  private boolean inRound = true;
+
 
   /**
    * Constructor.
-   * Also sets the number of coins the user start with.
    *
    * @param theID The id of this palyer.
    * @param theName The name of this player.
@@ -29,9 +34,8 @@ public class Player
     id = theID;
     name = theName;
     isItBot = theIsItBot;
-
-     coins = new Coins(Init.COINS_AT_BEGINNING);
   }
+
 
   /**
    * Accessor.
@@ -53,6 +57,36 @@ public class Player
   {
     return name;
   }
+
+
+  /**
+   * Accessor.
+   *
+   * @return If the player is still in the round.
+   */
+  public boolean isInRound()
+  {
+    return inRound;
+  }
+
+  /**
+   * Sets the inRound to true.
+   * Needed to start a new round.
+   */
+  public void beInRound()
+  {
+    inRound = true;
+  }
+
+  /**
+   * Sets the inRound to false.
+   * Needed to jump over this user during the game.
+   */
+  public void beNotInRound()
+  {
+    inRound = false;
+  }
+
 
   /**
    * Accessor.
