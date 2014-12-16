@@ -36,13 +36,11 @@ public class Table
   /**
    * Looks up who the next palyer is gonna be.
    */
-  public static int determineNextPlayerID()
+  public static void determineNextPlayerID()
   {
-    int nextID = getProperID(currentPlayerID + 1);
-    if (!players[nextID].isInRound())
+    currentPlayerID = getProperID(currentPlayerID + 1);
+    if (!players[currentPlayerID].isInRound())
       determineNextPlayerID();
-
-    return nextID;
   }
 
 
@@ -108,7 +106,7 @@ public class Table
         default : System.out.println("WTF!"); break;
       }
 
-      currentPlayerID = determineNextPlayerID();
+      determineNextPlayerID();
 
     } while(lastRaiserID != currentPlayerID);
   }
