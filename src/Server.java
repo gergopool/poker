@@ -107,16 +107,6 @@ public class Server
     Table.moveCoinsToPot(Table.bigBlindID, Table.blind.getAmount());
   }
 
-  private static void takeBids()
-  {
-    for(int i = 0; i < 5; i++)
-    {
-      System.out.print(Table.players[Table.getProperID(Table.nextPlayerID)] + ": ");
-      Init.INPUT_SCANNER.nextLine();
-      Table.determineNextPlayerID();
-    }
-  }
-
 
   private static boolean endOfRound()
   {
