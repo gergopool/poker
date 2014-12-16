@@ -1,0 +1,8 @@
+* Checking what if a player cannot call/raise/bet that amount,
+  because he doesn't have enough money to do that.
+    *  Maybe more pots needed than, so the pot must be an array.
+
+* Remember there might be more than only one winner of a round
+
+* The raise must be more strictly built on the blind, need to
+  look up their connection.
