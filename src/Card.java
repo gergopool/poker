@@ -15,6 +15,9 @@ public class Card
   private final int rank;
 
 
+  public enum SortOrder {BY_COLOUR, BY_RANK};
+
+
   /**
    * Constructor.
    *
@@ -25,6 +28,47 @@ public class Card
   {
     colour = theColour;
     rank = theRank;
+  }
+
+  public int getColour()
+  {
+    return colour;
+  }
+
+  public int getRank()
+  {
+    return rank;
+  }
+
+  public boolean sameColour(Card other)
+  {
+    return colour == other.getColour();
+  }
+
+  public boolean sameRank(Card other)
+  {
+    return rank == other.getRank();
+  }
+
+  public int compareTo(Card other, SortOrder order)
+  {
+    switch (order)
+    {
+      case BY_RANK:   if (!this.sameRank(other))
+                        return this.rank - other.getRank();
+                      else
+                        return this.colour - other.getColour();
+
+      case BY_COLOUR: if (!this.sameColour(other))
+                        return this.colour - other.getColour();
+                      else
+                        return this.rank - other.getRank();
+
+      default: break;
+    }
+
+    return 0;
+    
   }
 
 
