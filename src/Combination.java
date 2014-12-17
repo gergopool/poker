@@ -54,32 +54,65 @@ public class Combination
     System.out.println(value);
   }
 
-  private void sortCards(Card.SortOrder sortBy)
+  private Card[] sortCards(Card.SortOrder sortBy)
   {
+    Card[] sortedArray = new Card[noOfCards];
+    for (int i = 0; i < noOfCards; i++)
+      sortedArray[i] = allCards[i];
+
     for(int i = 0; i < noOfCards - 1; i++)
       for (int j = i + 1; j < noOfCards; j++)
-        if (allCards[i].compareTo(allCards[j], sortBy) < 0)
+        if (sortedArray[i].compareTo(sortedArray[j], sortBy) < 0)
         {
-          Card toSwap = new Card(allCards[i]);
-          allCards[i] = new Card(allCards[j]);
-          allCards[j] = new Card(toSwap);
+          Card toSwap = new Card(sortedArray[i]);
+          sortedArray[i] = new Card(sortedArray[j]);
+          sortedArray[j] = new Card(toSwap);
         }
         
+    return sortedArray;
   }
+
 
   /************************* COMBINATIONS *************************/
 
   public String highCards()
   {
-    sortCards(Card.SortOrder.BY_RANK);
-    String theValue = "";
+    Card[] sorted = sortCards(Card.SortOrder.BY_RANK);
+    String theValue = "0";
+
     for (int i = 0; i < noOfCards && i < 5; i++)
-      theValue += allCards[i].getRankPlusOneInHex();
+      theValue += sorted[i].getRankPlusOneInHex();
+
     return theValue;
   }
 
   public String changeIf_Pair(String valueWas)
   {
+    Card[] sorted = sortCards(Card.SortOrder.BY_RANK);
+    String theHighCards = "";
+    String pair = "";
+
+    int i = 0;
+    while (i < noOfCards - 1)
+    {
+      if (sorted[i].getRank() == sorted[i+1].getRank() && pair.equals("")) {
+        pair = sorted[i].getRankPlusOneInHex();
+        i++;
+      }
+      else 
+        theHighCards += sorted[i].getRankPlusOneInHex();
+      
+      i++;
+    }
+
+    if (i == noOfCards - 1)
+      theHighCards += sorted[i].getRankPlusOneInHex();
+
+    int subLength = (theHighCards.length() <= 3) ? theHighCards.length() : 3;
+
+    if (!pair.equals(""))
+      return "1" + pair + "0" + theHighCards.substring(0,subLength);
+      
     return valueWas;
   }
 

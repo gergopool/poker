@@ -1,19 +1,20 @@
 
     CODE | COMBINATIONS        |  CARDS FIGURES
-      0: | undefined           |  undefined
-      1: | high card           |  2
-      2: | pair                |  3
-      3: | two pairs           |  4
-      4: | drill               |  5
-      5: | straight            |  6
-      6: | flush               |  7
-      7: | full house          |  8
-      8: | poker               |  9
-      9: | stright flush       |  10
-      A: | royal flush         |  J
-      B: |                     |  Q
-      C: |                     |  K
-      D: |                     |  A
+      0: | undefined           |  
+      1: | high card           |  
+      2: | pair                |  2
+      3: | two pairs           |  3
+      4: | drill               |  4
+      5: | straight            |  5
+      6: | flush               |  6
+      7: | full house          |  7
+      8: | poker               |  8
+      9: | stright flush       |  9
+      A: | royal flush         |  10
+      B: |                     |  J
+      C: |                     |  Q
+      D: |                     |  K
+      E: |                     |  A
 
  Code:
  1. digit: Type of combination
@@ -24,10 +25,10 @@
  6. digit: Third high card
 
  Examples
- 1CBA52 | Highcards: K, Q, J, 6, 3
- 450320 | Drill: 6, 6, 6, 4, 3
- 8D0100 | Poker: A, A, A, A, 2
- 7C3000 | Full House: K, K, K, 4, 4
+ 1DCB63 | Highcards: K, Q, J, 6, 3
+ 460430 | Drill: 6, 6, 6, 4, 3
+ 8E0200 | Poker: A, A, A, A, 2
+ 7D4000 | Full House: K, K, K, 4, 4
 
  In case of combination is high card, we need all digits
  to represent the cards.

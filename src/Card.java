@@ -47,7 +47,26 @@ public class Card
 
   public String getRankPlusOneInHex()
   {
-    return String.valueOf(rank);
+    String s_rank = "0";
+    switch(rank)
+    {
+      case 0  : s_rank = "2"; break;
+      case 1  : s_rank = "3"; break;
+      case 2  : s_rank = "4"; break;
+      case 3  : s_rank = "5"; break;
+      case 4  : s_rank = "6"; break;
+      case 5  : s_rank = "7"; break;
+      case 6  : s_rank = "8"; break;
+      case 7  : s_rank = "9"; break;
+      case 8  : s_rank = "A"; break;
+      case 9  : s_rank = "B"; break;
+      case 10 : s_rank = "C"; break;
+      case 11 : s_rank = "D"; break;
+      case 12 : s_rank = "E"; break;
+      default : s_rank = "0"; break;
+    }
+
+    return s_rank;
   }
 
 
