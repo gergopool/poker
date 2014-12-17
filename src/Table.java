@@ -148,7 +148,7 @@ public class Table
 
       determineNextPlayerID();
 
-    } while(lastRaiserID != currentPlayerID);
+    } while(lastRaiserID != currentPlayerID && !endOfRound());
 
     moveCoinsToPot();
   }
