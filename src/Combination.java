@@ -1,37 +1,4 @@
-/****************************************************************
-| This file includes those methods and functions that only      |
-| static, they have no really connectinos to the board. Here    |
-| you find the refreshments of the cards, besides all of the    |
-| combinations and their codes are here.                        |
-| Briefly the codes:                                            |
-|                                                               |
-|              CODE | COMBINATIONS        |  CARDS FIGURES      |
-|                0: | undefined           |  undefined          |
-|                1: | high card           |  2                  |
-|                2: | pair                |  3                  |
-|                3: | two pairs           |  4                  |
-|                4: | drill               |  5                  |
-|                5: | straight            |  6                  |
-|                6: | flush               |  7                  |
-|                7: | full house          |  8                  |
-|                8: | poker               |  9                  |
-|                9: | stright flush       |  10                 |
-|                A: | royal flush         |  J                  |
-|                B: |                     |  Q                  |
-|                C: |                     |  K                  |
-|                D: |                     |  A                  |
-|                                                               |
-| Code:                                                         |
-| 1. digit: Type of combination                                 |
-| 2. digit: First figure of the combination                     |
-| 3. digit: Second figure of the combination                    |
-| 4. digit: First high card                                     |
-| 5. digit: Second high card                                    |
-| 6. digit: Third high card                                     |
-|                                                               |
-| In case of combination is high card, we need all digits       |
-| to represent the cards.                                       |
-****************************************************************/
+
 
 public class Combination
 {
@@ -51,9 +18,9 @@ public class Combination
     int i;
 
     for (i = 0; i < someCards.length; i++)
-      allCards[i] = someCards[i];
+      allCards[i] = new Card(someCards[i]);
     for (int j = 0; j < Table.noOfCardsOnBoard; j++)
-      allCards[i] = Table.board[i + j];
+      allCards[i + j] = new Card(Table.board[j]);
 
     determineCombination();
   }
@@ -73,8 +40,7 @@ public class Combination
    */
   public void determineCombination()
   {
-    /*value = highCards();
-
+    value = highCards();
     value = changeIf_Pair(value);
     value = changeIf_TwoPairs(value);
     value = changeIf_Drill(value);
@@ -83,8 +49,81 @@ public class Combination
     value = changeIf_FullHouse(value);
     value = changeIf_Poker(value);
     value = changeIf_StraightFlush(value);
-    value = changeIf_RoyalFlush(value);*/
+    value = changeIf_RoyalFlush(value);
+
+    System.out.println(value);
   }
+
+  private void sortCards(Card.SortOrder sortBy)
+  {
+    for(int i = 0; i < noOfCards - 1; i++)
+      for (int j = i + 1; j < noOfCards; j++)
+        if (allCards[i].compareTo(allCards[j], sortBy) < 0)
+        {
+          Card toSwap = new Card(allCards[i]);
+          allCards[i] = new Card(allCards[j]);
+          allCards[j] = new Card(toSwap);
+        }
+        
+  }
+
+  /************************* COMBINATIONS *************************/
+
+  public String highCards()
+  {
+    sortCards(Card.SortOrder.BY_RANK);
+    String theValue = "";
+    for (int i = 0; i < noOfCards && i < 5; i++)
+      theValue += allCards[i].getRankPlusOneInHex();
+    return theValue;
+  }
+
+  public String changeIf_Pair(String valueWas)
+  {
+    return valueWas;
+  }
+
+  public String changeIf_TwoPairs(String valueWas)
+  {
+    return valueWas;
+  }
+
+  public String changeIf_Drill(String valueWas)
+  {
+    return valueWas;
+  }
+
+  public String changeIf_Straigh(String valueWas)
+  {
+    return valueWas;
+  }
+
+  public String changeIf_Flush(String valueWas)
+  {
+    return valueWas;
+  }
+
+  public String changeIf_FullHouse(String valueWas)
+  {
+    return valueWas;
+  }
+
+  public String changeIf_Poker(String valueWas)
+  {
+    return valueWas;
+  }
+
+  public String changeIf_StraightFlush(String valueWas)
+  {
+    return valueWas;
+  }
+
+  public String changeIf_RoyalFlush(String valueWas)
+  {
+    return valueWas;
+  }
+
+
 
 
 }

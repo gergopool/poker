@@ -45,6 +45,12 @@ public class Card
     return colour;
   }
 
+  public String getRankPlusOneInHex()
+  {
+    return String.valueOf(rank);
+  }
+
+
   public int getRank()
   {
     return rank;
