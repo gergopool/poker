@@ -48,10 +48,11 @@ public class Server
     }
 
     // Some infos to the developer. It's just not here
+    /*
     for (int i = 0; i < Init.NUMBER_OF_PLAYERS; i++)
       System.out.println(Table.players[i]);
     System.out.println(Table.getInfos());
-
+    */
 
   }//main
 

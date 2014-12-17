@@ -11,7 +11,7 @@ public class Table
   public static int smallBlindID;
   public static int bigBlindID;
   public static int currentPlayerID;
-  public static int lastRaiserID;
+  public static int lastSpeakerID;
 
   //Coins
   public static Coins pot = new Coins(0);
@@ -31,8 +31,9 @@ public class Table
     smallBlindID = getProperID(dealerID + 1);
     bigBlindID = getProperID(dealerID + 2);
     currentPlayerID = getProperID(dealerID + 3);
-    lastRaiserID = currentPlayerID;
   }
+
+
 
   public static void showFlop()
   {
@@ -41,6 +42,13 @@ public class Table
     showCardOnBoard();
   }
 
+
+  public static boolean endOfRound()
+  {
+    return getNextPlayerID(currentPlayerID) == currentPlayerID;
+  }
+
+
   public static void showCardOnBoard()
   {
     board[noOfCardsOnBoard] = deck.getTop();
@@ -48,15 +56,14 @@ public class Table
     noOfCardsOnBoard++;
   }
 
+
+
   public static void burnCard()
   {
     deck.getTop();
   }
 
-  public static boolean endOfRound()
-  {
-    return currentPlayerID == getNextPlayerID(currentPlayerID);
-  }
+
 
 
   /**
@@ -69,6 +76,19 @@ public class Table
       determineNextPlayerID();
   }
 
+
+
+  public static int getPreviousPlayerID(int idNow)
+  {
+    int previousID = getProperID(idNow - 1);
+    if (!players[previousID].isInRound())
+      return getPreviousPlayerID(previousID);
+
+    return previousID;
+  }
+
+
+
   public static int getNextPlayerID(int idNow)
   {
     int nextID = getProperID(idNow + 1);
@@ -79,6 +99,7 @@ public class Table
   }
 
 
+
   /**
    * For over Bound execption, we determine the proper id of a big id.
    *
@@ -86,8 +107,11 @@ public class Table
    */
   public static int getProperID(int currentID)
   {
-    return currentID % Init.NUMBER_OF_PLAYERS;
+    return (currentID + Init.NUMBER_OF_PLAYERS) % Init.NUMBER_OF_PLAYERS;
   }
+
+
+
 
   /**
    * Moving coins from players to the pot.
@@ -101,7 +125,11 @@ public class Table
       pot.add(amount);
     }
 
+    maxPreparedCoins.erase();
   }
+
+
+
 
   /**
    * Prepares the blind's coins and alter the maxPreparedCoins to it.
@@ -114,6 +142,9 @@ public class Table
     maxPreparedCoins = new Coins(blind.getAmount());
   }
 
+
+
+
   /**
    * A round of game.
    * It is not done until there has been no raise for a whole round.
@@ -122,16 +153,14 @@ public class Table
   {
     int i = 0;
     String action = "";
-    if (noOfCardsOnBoard != 0)
-    {
-      maxPreparedCoins.erase();
-    }
-    lastRaiserID = currentPlayerID;
+
+    refreshOnPlayersCombinations();
+    lastSpeakerID = getPreviousPlayerID(currentPlayerID);
 
     do
-    {
+    {     
       action = Server.askForAction();
-      
+
       //Passing the action to the player
       switch(action.toLowerCase())
       {
@@ -146,12 +175,26 @@ public class Table
         default : System.out.println("WTF!"); break;
       }
 
+      if(currentPlayerID == lastSpeakerID)
+        break;
+
       determineNextPlayerID();
 
-    } while(lastRaiserID != currentPlayerID && !endOfRound());
+    } while(!endOfRound());
 
     moveCoinsToPot();
   }
+
+
+
+
+  public static void refreshOnPlayersCombinations()
+  {
+    for(int playerID = 0; playerID < Init.NUMBER_OF_PLAYERS; playerID++)
+      players[playerID].refreshCombination();
+  }
+
+
 
 
   /**
@@ -161,6 +204,9 @@ public class Table
   {
     setDealer(dealerID + 1);
   }
+
+
+
 
   /**
    * Returns with the infos of the table.

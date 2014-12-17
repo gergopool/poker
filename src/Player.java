@@ -18,7 +18,10 @@ public class Player
   // The cards the player has. It can be maximum 2.
   private Card[] hand = new Card[2];
 
-  //Activity in the current round
+  // The combination of the cards 
+  private Combination combination;
+
+  // Activity in the current round
   private boolean inRound = true;
 
 
@@ -108,6 +111,13 @@ public class Player
     return coins;
   }
 
+  /**
+   * Mutator.
+   */
+  public void refreshCombination()
+  {
+    combination = new Combination(hand);
+  }
 
   /**
    * Accessor.
@@ -197,7 +207,7 @@ public class Player
     preparedCoins.add(howMuchLeft + amountOfRaise);
 
     Table.maxPreparedCoins.add(amountOfRaise);
-    Table.lastRaiserID = id;
+    Table.lastSpeakerID = Table.getPreviousPlayerID(id);
   }
 
 
@@ -209,7 +219,7 @@ public class Player
     preparedCoins.add(amountOfBet);
 
     Table.maxPreparedCoins.add(amountOfBet);
-    Table.lastRaiserID = id;
+    Table.lastSpeakerID = Table.getPreviousPlayerID(id);
   }
 
 
