@@ -24,7 +24,7 @@ public class Deck
     cards = new ArrayList<Card>();
 
     for(int colour = 0; colour < 4; colour++)
-      for (int rank = 0; rank < 13; rank++)
+      for (int rank = 2; rank <= 14; rank++)
         cards.add(new Card(colour, rank));
   }
 

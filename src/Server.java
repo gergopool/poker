@@ -189,7 +189,7 @@ public class Server
   public static String askForAction()
   {
     Player thePlayer = Table.players[Table.getProperID(Table.currentPlayerID)];
-    System.out.print(thePlayer + ": ");
+    System.out.println(thePlayer + ": ");
     String action = Init.INPUT_SCANNER.nextLine();
 
     // Checking if the player is allowed to do the desired action
