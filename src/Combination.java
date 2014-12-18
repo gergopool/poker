@@ -84,7 +84,7 @@ public class Combination
     for (i = 0; i < noOfCards; i++)
       sortedArray[i] = allCards[i];
 
-    if (aceDown)
+    if (!aceDown)
     {
 
       for(i = 0; i < noOfCards - 1; i++)
@@ -125,8 +125,16 @@ public class Combination
     Card[] sorted = sortCardsDesc(Card.SortOrder.BY_RANK, false);
     String theValue = "0";
 
-    for (int i = 0; i < noOfCards && i < 5; i++)
+    int i;
+    for (i = 0; i < noOfCards && i < 5; i++)
       theValue += sorted[i].getRankInHex();
+
+    while(i < 5)
+    {
+      theValue += "0";
+      i++;
+    }
+
 
       return theValue;
   }
@@ -168,12 +176,12 @@ public class Combination
     if (i == noOfCards - 1)
       theHighCards += sorted[i].getRankInHex();
 
-    //The length of highcards might be less than 3, eg. before flop
-    int subLength = (theHighCards.length() <= 3) ? theHighCards.length() : 3;
+    while(theHighCards.length() < 3)
+      theHighCards += "0";
 
     //If pair found, we return the appropriate value
     if (!pair.equals(""))
-      return "1" + pair.charAt(0) + "0" + theHighCards.substring(0,subLength);
+      return "1" + pair.charAt(0) + "0" + theHighCards.substring(0,3);
       
     return valueWas;
   }
@@ -291,6 +299,8 @@ public class Combination
   private String changeIf_Straigh(String valueWas)
   {
     Card[] sorted = sortCardsDesc(Card.SortOrder.BY_RANK, false);
+
+
     String straight = "";
 
     int i = 0;
@@ -299,13 +309,15 @@ public class Combination
       if(sorted[i].getRank() == sorted[i + 1].getRank() + 1
          && sorted[i + 1].getRank() == sorted[i + 2].getRank() + 1
          && sorted[i + 2].getRank() == sorted[i + 3].getRank() + 1
-         && sorted[i + 3].getRank() == sorted[i + 4].aceDownRank() + 1)
+         && (sorted[i + 3].getRank() == sorted[i + 4].aceDownRank() + 1
+             || sorted[i].getRank() == 5 && sorted[i].getRank() == 14)
       {
           return "4" + sorted[i].getRankInHex() + "0000";
       }
 
       i++;
     }
+
 
     return valueWas;
   }
@@ -324,14 +336,21 @@ public class Combination
     Card[] sorted = sortCardsDesc(Card.SortOrder.BY_COLOUR, aceDown);
     String flush = "";
 
+
     int i = 0;
     while(i < noOfCards - 4)
     {
-      if (sorted[i].sameColour(sorted[i + 4]))
-        return "5" + sorted[i].getRankInHex() + "0000";
+      if (sorted[i].sameColour(sorted[i + 4]) && flush.length() == 0)
+        flush = "" + sorted[i].getRankInHex()
+                   + sorted[i + 1].getRankInHex()
+                   + sorted[i + 2].getRankInHex()
+                   + sorted[i + 3].getRankInHex()
+                   + sorted[i + 4].getRankInHex();
       i++;
     }
 
+    if (flush.length() != 0)
+      return "7" + flush;
 
     return valueWas;
   }
@@ -465,12 +484,14 @@ public class Combination
 
     // Checking if there is stright or flush with random strings
     // The results will be 2 chars long.
-    String straight = changeIf_Straigh("aaa").substring(0, 2);
-    String flushAceDown = changeIf_Flush("sss", true).substring(0, 2);
-    String flushAceUp = changeIf_Flush("sss", false).substring(0, 2);
+    char straight = changeIf_Straigh("aaa").charAt(1);
+    char flushAceDown = changeIf_Flush("bbb", true).charAt(1);
+    char flushAceUp = changeIf_Flush("ccc", false).charAt(1);
 
-    if (straight.equals(flushAceDown) || straight.equals(flushAceUp))
-      return "8" + straight.charAt(1) + "0000";
+    System.out.println("" + straight + flushAceUp + flushAceDown);
+
+    if (straight == flushAceUp || straight == flushAceDown)
+      return "8" + straight + "0000";
 
     return valueWas;
   }
@@ -487,8 +508,8 @@ public class Combination
    */
   public String changeIf_RoyalFlush(String valueWas)
   {
-    if (valueWas == "8E0000")
-      return "9E0000";
+    if (valueWas.equals("8E0000"))
+      return "900000";
     return valueWas;
   }
 

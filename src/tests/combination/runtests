@@ -1,4 +1,5 @@
 #!/bin/bash
 
-javac -classpath $CLASSPATH:$HOME/Java/Poker/src Combination_test.java
-java Combination_test
+#CLASSPATH=$HOME/Java/Poker/src
+javac -classpath $HOME/Java/Poker/src/ CombinationTest.java
+java CombinationTest
