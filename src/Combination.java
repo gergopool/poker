@@ -30,9 +30,28 @@ public class Combination
    *
    * @return The value of the combination 
    */
-  public String s_getvalue()
+  public String s_getValue()
   {
     return value;
+  }
+
+  /**
+   * Get name of the combination
+   */
+  private String getName()
+  {
+    String name = "Unknown";
+    switch(value.charAt(0))
+    {
+      case '0' : name = "High card"; break;
+      case '1' : name = "Pair"; break;
+      case '2' : name = "Two Pairs"; break;
+      case '3' : name = "Drill"; break;
+
+      default: break;
+    }
+
+    return name;
   }
 
   /**
@@ -50,8 +69,6 @@ public class Combination
     value = changeIf_Poker(value);
     value = changeIf_StraightFlush(value);
     value = changeIf_RoyalFlush(value);
-
-    System.out.println(value);
   }
 
   private Card[] sortCards(Card.SortOrder sortBy)
@@ -86,6 +103,10 @@ public class Combination
     return theValue;
   }
 
+
+
+
+
   public String changeIf_Pair(String valueWas)
   {
     Card[] sorted = sortCards(Card.SortOrder.BY_RANK);
@@ -93,10 +114,13 @@ public class Combination
     String pair = "";
 
     int i = 0;
+    //Going through the cards
     while (i < noOfCards - 1)
     {
-      if (sorted[i].getRank() == sorted[i+1].getRank() && pair.equals("")) {
-        pair = sorted[i].getRankPlusOneInHex();
+      //If pair found save it. Otherwise add everything to
+      //theHighCards, and we will cut it later on if needed.
+      if (sorted[i].getRank() == sorted[i+1].getRank()) {
+        pair += sorted[i].getRankPlusOneInHex();
         i++;
       }
       else 
@@ -105,24 +129,92 @@ public class Combination
       i++;
     }
 
+    //If the last one was not pair, we add it
     if (i == noOfCards - 1)
       theHighCards += sorted[i].getRankPlusOneInHex();
 
+    //The length of highcards might be less than 3, eg. before flop
     int subLength = (theHighCards.length() <= 3) ? theHighCards.length() : 3;
 
+    //If pair found, we return the appropriate value
     if (!pair.equals(""))
-      return "1" + pair + "0" + theHighCards.substring(0,subLength);
+      return "1" + pair.charAt(0) + "0" + theHighCards.substring(0,subLength);
       
     return valueWas;
   }
 
+
+
+
+
   public String changeIf_TwoPairs(String valueWas)
   {
+    Card[] sorted = sortCards(Card.SortOrder.BY_RANK);
+    String theHighCards = "";
+    String pair = "";
+
+    int i = 0;
+    //Going through the cards
+    while (i < noOfCards - 1)
+    {
+      //If pair found save it. Otherwise add everything to
+      //theHighCards, and we will cut it later on if needed.
+      if (sorted[i].getRank() == sorted[i+1].getRank()) {
+        pair += sorted[i].getRankPlusOneInHex();
+        i++;
+      }
+      else 
+        theHighCards += sorted[i].getRankPlusOneInHex();
+      
+      i++;
+    }
+
+    //If the last one was not pair, we add it
+    if (i == noOfCards - 1)
+      theHighCards += sorted[i].getRankPlusOneInHex();
+
+    //If pair found, we return the appropriate value
+    if (pair.length() >= 2)
+      return "2" + pair.charAt(0) + pair.charAt(1)
+                                      + theHighCards.substring(0,1) + "00";
+      
     return valueWas;
   }
 
   public String changeIf_Drill(String valueWas)
   {
+    Card[] sorted = sortCards(Card.SortOrder.BY_RANK);
+    String theHighCards = "";
+    String drill = "";
+
+    int i = 0;
+    //Going through the cards
+    while (i < noOfCards - 2)
+    {
+      //If drill found save it. Otherwise add everything to
+      //theHighCards, and we will cut it later on if needed.
+      if (sorted[i].getRank() == sorted[i+1].getRank()
+          && sorted[i+1].getRank() == sorted[i+2].getRank())
+      {
+        drill += sorted[i].getRankPlusOneInHex();
+        i += 2;
+      }
+      else
+        theHighCards += sorted[i].getRankPlusOneInHex();
+      
+      i++;
+    }
+
+    //If the last one was not drill, we add it
+    if (i == noOfCards - 2)
+      theHighCards += sorted[i].getRankPlusOneInHex()
+                    + sorted[i+1].getRankPlusOneInHex();
+
+    //If drill found, we return the appropriate value
+    if (drill.length() != 0)
+      return "3" + drill.charAt(0) + "0"
+                                      + theHighCards.substring(0,2) + "0";
+      
     return valueWas;
   }
 
@@ -157,6 +249,9 @@ public class Combination
   }
 
 
-
+  public String toString()
+  {
+    return "[" + getName() + ": " + value + "]";
+  }
 
 }

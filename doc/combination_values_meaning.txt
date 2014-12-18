@@ -1,10 +1,10 @@
 
     CODE | COMBINATIONS        |  CARDS FIGURES
-      0: | undefined           |  
-      1: | high card           |  
-      2: | pair                |  2
-      3: | two pairs           |  3
-      4: | drill               |  4
+      0: | high card           |  
+      1: | pairs                |  
+      2: | two pairs               |  2
+      3: | drill           |  3
+      4: | straight               |  4
       5: | straight            |  5
       6: | flush               |  6
       7: | full house          |  7
