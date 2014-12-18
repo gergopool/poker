@@ -228,13 +228,95 @@ public class Combination
     return valueWas;
   }
 
+
+
   public String changeIf_FullHouse(String valueWas)
   {
+    Card[] sorted = sortCards(Card.SortOrder.BY_RANK);
+    String theHighCards = "";
+    String drill = "";
+    String pair= "";
+
+    int i = 0;
+    //Going through the cards
+    while (i < noOfCards - 2)
+    {
+      //If drill found save it. Otherwise add everything to
+      //theHighCards, and we will cut it later on if needed.
+      if (sorted[i].getRank() == sorted[i+1].getRank())
+      {
+        if (sorted[i+1].getRank() == sorted[i+2].getRank())
+        {
+          drill += sorted[i].getRankPlusOneInHex();
+          i += 2;
+        }
+        else
+        {
+          pair += sorted[i].getRankPlusOneInHex();
+          i += 1;
+        }
+      }
+      else
+        theHighCards += sorted[i].getRankPlusOneInHex();
+      
+      i++;
+    }
+
+    //If the last one was not drill, we add it
+    if (i == noOfCards - 2)
+    {
+      theHighCards += sorted[i].getRankPlusOneInHex();
+      i++;
+    }
+    if (i == noOfCards - 1)
+      theHighCards += sorted[i+1].getRankPlusOneInHex();
+
+
+    //If drill and pair found, we return the appropriate value
+    if (drill.length() != 0 && pair.length() != 0)
+      return "6" + drill.charAt(0) + pair.charAt(0) + "000";
+
     return valueWas;
   }
 
+
+
+
   public String changeIf_Poker(String valueWas)
   {
+    Card[] sorted = sortCards(Card.SortOrder.BY_RANK);
+    String theHighCards = "";
+    String poker = "";
+
+    int i = 0;
+    //Going through the cards
+    while (i < noOfCards - 2)
+    {
+      //If drill found save it. Otherwise add everything to
+      //theHighCards, and we will cut it later on if needed.
+      if (sorted[i].getRank() == sorted[i+1].getRank()
+          && sorted[i].getRank() == sorted[i+2].getRank()
+            && sorted[i].getRank() == sorted[i+3].getRank())
+      {
+        poker += sorted[i].getRankPlusOneInHex();
+        i += 3;
+      }
+      else
+        theHighCards += sorted[i].getRankPlusOneInHex();
+      
+      i++;
+    }
+
+    //If the last one was not drill, we add it
+    if (i == noOfCards - 3)
+      theHighCards += sorted[i].getRankPlusOneInHex()
+                    + sorted[i+1].getRankPlusOneInHex()
+                    + sorted[i+2].getRankPlusOneInHex();
+
+    //If drill found, we return the appropriate value
+    if (poker.length() != 0)
+      return "7" + poker + "0" + theHighCards.substring(0,1) + "00";
+      
     return valueWas;
   }
 
