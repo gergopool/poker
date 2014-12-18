@@ -47,6 +47,8 @@ public class Combination
       case '1' : name = "Pair"; break;
       case '2' : name = "Two Pairs"; break;
       case '3' : name = "Drill"; break;
+      case '6' : name = "Full House"; break;
+      case '7' : name = "Poker"; break;
 
       default: break;
     }
@@ -92,7 +94,7 @@ public class Combination
 
   /************************* COMBINATIONS *************************/
 
-  public String highCards()
+  private String highCards()
   {
     Card[] sorted = sortCards(Card.SortOrder.BY_RANK);
     String theValue = "0";
@@ -107,7 +109,7 @@ public class Combination
 
 
 
-  public String changeIf_Pair(String valueWas)
+  private String changeIf_Pair(String valueWas)
   {
     Card[] sorted = sortCards(Card.SortOrder.BY_RANK);
     String theHighCards = "";
@@ -147,7 +149,7 @@ public class Combination
 
 
 
-  public String changeIf_TwoPairs(String valueWas)
+  private String changeIf_TwoPairs(String valueWas)
   {
     Card[] sorted = sortCards(Card.SortOrder.BY_RANK);
     String theHighCards = "";
@@ -159,7 +161,9 @@ public class Combination
     {
       //If pair found save it. Otherwise add everything to
       //theHighCards, and we will cut it later on if needed.
-      if (sorted[i].getRank() == sorted[i+1].getRank()) {
+      if (sorted[i].getRank() == sorted[i+1].getRank()
+                              && pair.length() <= 1)
+      {
         pair += sorted[i].getRankPlusOneInHex();
         i++;
       }
@@ -175,11 +179,19 @@ public class Combination
 
     //If pair found, we return the appropriate value
     if (pair.length() >= 2)
+      {
+      theHighCards = "" + theHighCards.charAt(0);
       return "2" + pair.charAt(0) + pair.charAt(1)
-                                      + theHighCards.substring(0,1) + "00";
+                                      + theHighCards + "00";
+      }
+
       
     return valueWas;
   }
+
+
+
+
 
   public String changeIf_Drill(String valueWas)
   {
@@ -194,7 +206,8 @@ public class Combination
       //If drill found save it. Otherwise add everything to
       //theHighCards, and we will cut it later on if needed.
       if (sorted[i].getRank() == sorted[i+1].getRank()
-          && sorted[i+1].getRank() == sorted[i+2].getRank())
+          && sorted[i+1].getRank() == sorted[i+2].getRank()
+            && drill.length() == 0)
       {
         drill += sorted[i].getRankPlusOneInHex();
         i += 2;
@@ -205,32 +218,46 @@ public class Combination
       i++;
     }
 
-    //If the last one was not drill, we add it
-    if (i == noOfCards - 2)
-      theHighCards += sorted[i].getRankPlusOneInHex()
-                    + sorted[i+1].getRankPlusOneInHex();
+    //If the last chars were not drill, we add it
+    while(i < noOfCards)
+    {
+      theHighCards += sorted[i].getRankPlusOneInHex();
+      i++;
+    }
+
 
     //If drill found, we return the appropriate value
     if (drill.length() != 0)
-      return "3" + drill.charAt(0) + "0"
-                                      + theHighCards.substring(0,2) + "0";
+    {
+      theHighCards = "" + theHighCards.charAt(0) + theHighCards.charAt(1);
+      return "3" + drill.charAt(0) + "0" + theHighCards + "0";
+    }
       
     return valueWas;
   }
 
-  public String changeIf_Straigh(String valueWas)
+
+
+
+
+  private String changeIf_Straigh(String valueWas)
   {
     return valueWas;
   }
 
-  public String changeIf_Flush(String valueWas)
+
+
+
+
+  private String changeIf_Flush(String valueWas)
   {
     return valueWas;
   }
 
 
 
-  public String changeIf_FullHouse(String valueWas)
+
+  private String changeIf_FullHouse(String valueWas)
   {
     Card[] sorted = sortCards(Card.SortOrder.BY_RANK);
     String theHighCards = "";
@@ -263,13 +290,11 @@ public class Combination
     }
 
     //If the last one was not drill, we add it
-    if (i == noOfCards - 2)
+    while(i < noOfCards)
     {
       theHighCards += sorted[i].getRankPlusOneInHex();
       i++;
     }
-    if (i == noOfCards - 1)
-      theHighCards += sorted[i+1].getRankPlusOneInHex();
 
 
     //If drill and pair found, we return the appropriate value
@@ -282,7 +307,7 @@ public class Combination
 
 
 
-  public String changeIf_Poker(String valueWas)
+  private String changeIf_Poker(String valueWas)
   {
     Card[] sorted = sortCards(Card.SortOrder.BY_RANK);
     String theHighCards = "";
@@ -290,9 +315,9 @@ public class Combination
 
     int i = 0;
     //Going through the cards
-    while (i < noOfCards - 2)
+    while (i < noOfCards - 3)
     {
-      //If drill found save it. Otherwise add everything to
+      //If poker found save it. Otherwise add everything to
       //theHighCards, and we will cut it later on if needed.
       if (sorted[i].getRank() == sorted[i+1].getRank()
           && sorted[i].getRank() == sorted[i+2].getRank()
@@ -307,11 +332,12 @@ public class Combination
       i++;
     }
 
-    //If the last one was not drill, we add it
-    if (i == noOfCards - 3)
-      theHighCards += sorted[i].getRankPlusOneInHex()
-                    + sorted[i+1].getRankPlusOneInHex()
-                    + sorted[i+2].getRankPlusOneInHex();
+    //If the last chars were not poker, we add it
+    while(i < noOfCards)
+    {
+      theHighCards += sorted[i].getRankPlusOneInHex();
+      i++;
+    }
 
     //If drill found, we return the appropriate value
     if (poker.length() != 0)
@@ -320,15 +346,23 @@ public class Combination
     return valueWas;
   }
 
+
+
+
   public String changeIf_StraightFlush(String valueWas)
   {
     return valueWas;
   }
 
+
+
+
   public String changeIf_RoyalFlush(String valueWas)
   {
     return valueWas;
   }
+
+
 
 
   public String toString()
