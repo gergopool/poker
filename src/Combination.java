@@ -69,8 +69,10 @@ public class Combination
     value = changeIf_Pair(value);
     value = changeIf_TwoPairs(value);
     value = changeIf_Drill(value);
-    value = changeIf_Straigh(value);
-    value = changeIf_Flush(value, false); //AceDown false
+    value = changeIf_Straigh(value, true);
+    value = changeIf_Straigh(value, false);
+    value = changeIf_Flush(value, true);
+    value = changeIf_Flush(value, false);
     value = changeIf_FullHouse(value);
     value = changeIf_Poker(value);
     value = changeIf_StraightFlush(value);
@@ -110,6 +112,45 @@ public class Combination
     }
         
     return sortedArray;
+  }
+
+
+  private Card[] makeUniqueInRanks(Card[] cards)
+  {
+    int noOfUniqueCards = 1;
+    for(int i = 1; i < cards.length; i++)
+      if (cards[i].getRank() != cards[i - 1].getRank())
+        noOfUniqueCards++;
+
+    Card[] unique = new Card[noOfUniqueCards];
+    unique[0] = cards[0];
+    int counter = 1;
+    for(int i = 1; i < cards.length; i++)
+      if (cards[i].getRank() != cards[i - 1].getRank())
+      {
+        unique[counter] = cards[i];
+        counter++;
+      }
+
+   return unique;
+  }
+
+
+  private int hexToInt(char hex)
+  {
+    String s_hex = "" + hex;
+    int result = Integer.parseInt(s_hex, 16);
+    if (result == 1)
+      return 14;
+
+    return result;
+  }
+
+  private char intToHex(int n)
+  {
+    if (n == 1)
+      n = 14;
+    return Integer.toHexString(n).toUpperCase().charAt(0);
   }
 
 
@@ -296,28 +337,24 @@ public class Combination
    *
    * @param valueWas What the current value is before calling method.
    */
-  private String changeIf_Straigh(String valueWas)
+  private String changeIf_Straigh(String valueWas, boolean aceDown)
   {
-    Card[] sorted = sortCardsDesc(Card.SortOrder.BY_RANK, false);
-
-
-    String straight = "";
+    Card[] sorted = sortCardsDesc(Card.SortOrder.BY_RANK, aceDown);
+    sorted = makeUniqueInRanks(sorted);
 
     int i = 0;
-    while(i < noOfCards - 4)
+    while(i < sorted.length - 4)
     {
       if(sorted[i].getRank() == sorted[i + 1].getRank() + 1
          && sorted[i + 1].getRank() == sorted[i + 2].getRank() + 1
          && sorted[i + 2].getRank() == sorted[i + 3].getRank() + 1
-         && (sorted[i + 3].getRank() == sorted[i + 4].aceDownRank() + 1
-             || sorted[i].getRank() == 5 && sorted[i].getRank() == 14)
+         && sorted[i + 3].getRank() == sorted[i + 4].aceDownRank() + 1)
       {
           return "4" + sorted[i].getRankInHex() + "0000";
       }
 
       i++;
     }
-
 
     return valueWas;
   }
@@ -336,7 +373,6 @@ public class Combination
     Card[] sorted = sortCardsDesc(Card.SortOrder.BY_COLOUR, aceDown);
     String flush = "";
 
-
     int i = 0;
     while(i < noOfCards - 4)
     {
@@ -350,7 +386,7 @@ public class Combination
     }
 
     if (flush.length() != 0)
-      return "7" + flush;
+      return "5" + flush;
 
     return valueWas;
   }
@@ -379,7 +415,8 @@ public class Combination
       //theHighCards, and we will cut it later on if needed.
       if (sorted[i].getRank() == sorted[i+1].getRank())
       {
-          if (sorted[i + 1].getRank() == sorted[i + 2].getRank())
+          if (sorted[i + 1].getRank() == sorted[i + 2].getRank()
+              && drill.length() == 0)
           {
             drill += sorted[i].getRankInHex();
             i += 2;
@@ -429,6 +466,7 @@ public class Combination
     String theHighCards = "";
     String poker = "";
 
+
     int i = 0;
 
     //Going through the cards
@@ -462,7 +500,7 @@ public class Combination
 
     //If drill found, we return the appropriate value
     if (poker.length() != 0)
-      return "7" + poker + "0" + theHighCards.substring(0,1) + "00";
+      return "7" + poker + "0" + theHighCards.charAt(0) + "00";
       
 
     return valueWas;
@@ -484,14 +522,27 @@ public class Combination
 
     // Checking if there is stright or flush with random strings
     // The results will be 2 chars long.
-    char straight = changeIf_Straigh("aaa").charAt(1);
-    char flushAceDown = changeIf_Flush("bbb", true).charAt(1);
-    char flushAceUp = changeIf_Flush("ccc", false).charAt(1);
+    String straightAceUp = changeIf_Straigh("pppppp", false);
+    String flushAceUp = changeIf_Flush("qqqqqq", false);
+    String straightAceDown = changeIf_Straigh("rrrrrr", true);
+    String flushAceDown = changeIf_Flush("ssssss", true);
 
-    System.out.println("" + straight + flushAceUp + flushAceDown);
+    char aceUpLast = 'g';
+    if (straightAceUp.charAt(0) != 'p')
+      aceUpLast = intToHex(hexToInt(straightAceUp.charAt(1)) - 4);
 
-    if (straight == flushAceUp || straight == flushAceDown)
-      return "8" + straight + "0000";
+    char aceDownLast = 'g';
+    if (straightAceDown.charAt(0) != 'r')
+      aceDownLast = intToHex(hexToInt(straightAceDown.charAt(1)) - 4);
+
+
+    if (straightAceUp.charAt(1) == flushAceUp.charAt(1)
+        && aceUpLast == flushAceUp.charAt(5))
+      return "8" + straightAceUp.charAt(1) + "0000";
+
+    if (straightAceDown.charAt(1) == flushAceDown.charAt(1)
+        && aceDownLast == flushAceDown.charAt(5))
+      return "8" + straightAceDown.charAt(1) + "0000";
 
     return valueWas;
   }
