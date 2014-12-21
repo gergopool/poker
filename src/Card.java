@@ -30,15 +30,7 @@ public class Card
     rank = theRank;
   }
 
-  /**
-   * Constructor (For copying)
-   *
-   */
-  public Card(Card other)
-  {
-    colour = other.colour;
-    rank = other.rank;
-  }
+
 
   public int getColour()
   {

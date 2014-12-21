@@ -19,7 +19,7 @@ public class Server
     {
       Table.deck.shuffle();
       dealCardsAmongPlayers();
-      getMoneyFromBlinds();
+      Table.askForBlinds();
 
       Table.takeBids();
 
@@ -43,12 +43,12 @@ public class Server
         Table.takeBids();
       }
 
-
-      shareCoinsAmongWinners();
+      Table.shareCoinsAmongWinners();
     }
 
-    // Some infos to the developer. It's just not here
     /*
+    // Some infos to the developer. It's just not here
+    System.out.println();
     for (int i = 0; i < Init.NUMBER_OF_PLAYERS; i++)
       System.out.println(Table.players[i]);
     System.out.println(Table.getInfos());
@@ -114,34 +114,10 @@ public class Server
   }
 
 
-  private static void getMoneyFromBlinds()
-  {
-    Table.askForBlinds();
-  }
-
-
-  private static boolean endOfRound()
-  {
-    return false;
-  }
-
-
-  private static boolean needToBurn()
-  {
-    return false;
-  }
-
-
 
   public static void showCard(Card card)
   {
     System.out.println(card);
-  }
-
-
-  private static void shareCoinsAmongWinners()
-  {
-
   }
 
 

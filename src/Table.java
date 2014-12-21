@@ -219,4 +219,51 @@ public class Table
            "  Big blind: " + players[bigBlindID].getName();
   }
 
+
+
+  private static Player[] sortPlayersByCombinationDesc(Player[] thePlayers)
+  {
+    Player[] somePlayers = new Player[thePlayers.length];
+    for(int i = 0; i < thePlayers.length; i++)
+      somePlayers[i] = thePlayers[i];
+
+
+    for(int i = 0; i < somePlayers.length - 1; i++)
+      for (int j = i + 1; j < somePlayers.length; j++)
+        if (somePlayers[i].getCombination().compareTo
+                                  (somePlayers[j].getCombination()) < 0)
+        {
+          Player temp = somePlayers[i];
+          somePlayers[i] = somePlayers[j];
+          somePlayers[j] = temp;
+        }
+
+    return somePlayers;
+  }
+
+
+
+  public static void shareCoinsAmongWinners()
+  {
+    Player[] playersInRank = sortPlayersByCombinationDesc(players);
+    int noOfWinners = 0;
+
+    do
+    { noOfWinners++; }
+    while(noOfWinners < players.length
+          && playersInRank[noOfWinners].getCombination().compareTo
+                      (playersInRank[noOfWinners - 1].getCombination()) == 0);
+
+    int prize = pot.getAmount() / noOfWinners;
+
+    System.out.println();
+    System.out.println("The winners: ");
+    for(int i = 0; i < noOfWinners; i++)
+    {
+      playersInRank[i].getCoins().add(prize);
+      System.out.println(playersInRank[i]);
+    }
+
+    pot.erase();
+  }
 }

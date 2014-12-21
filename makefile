@@ -5,6 +5,9 @@ combination_test:
 call_check_test:
 	java -cp bin Server < data/call_check_for_4_ppl.txt
 
+run:
+	java -cp bin Server
+
 javac_all:
 	javac -d bin -cp bin src/*.java
 

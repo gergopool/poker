@@ -18,9 +18,9 @@ public class Combination
     int i;
 
     for (i = 0; i < someCards.length; i++)
-      allCards[i] = new Card(someCards[i]);
+      allCards[i] = someCards[i];
     for (int j = 0; j < Table.noOfCardsOnBoard; j++)
-      allCards[i + j] = new Card(Table.board[j]);
+      allCards[i + j] = Table.board[j];
 
     determineCombination();
   }
@@ -93,9 +93,9 @@ public class Combination
         for (j = i + 1; j < noOfCards; j++)
           if (sortedArray[i].compareTo(sortedArray[j], sortBy) < 0)
           {
-            Card toSwap = new Card(sortedArray[i]);
-            sortedArray[i] = new Card(sortedArray[j]);
-            sortedArray[j] = new Card(toSwap);
+            Card temp = sortedArray[i];
+            sortedArray[i] = sortedArray[j];
+            sortedArray[j] = temp;
           }
     }
     else
@@ -105,9 +105,9 @@ public class Combination
         for (j = i + 1; j < noOfCards; j++)
           if (sortedArray[i].compareToAceDown(sortedArray[j], sortBy) < 0)
           {
-            Card toSwap = new Card(sortedArray[i]);
-            sortedArray[i] = new Card(sortedArray[j]);
-            sortedArray[j] = new Card(toSwap);
+            Card temp = sortedArray[i];
+            sortedArray[i] = sortedArray[j];
+            sortedArray[j] = temp;
           }
     }
         
@@ -151,6 +151,15 @@ public class Combination
     if (n == 1)
       n = 14;
     return Integer.toHexString(n).toUpperCase().charAt(0);
+  }
+
+
+  public int compareTo(Combination other)
+  {
+    int valueOfThis = Integer.parseInt(value, 16);
+    int valueOfOther = Integer.parseInt(other.s_getValue(), 16);
+
+    return valueOfThis - valueOfOther;
   }
 
 

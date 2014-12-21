@@ -39,6 +39,13 @@ public class Player
     isItBot = theIsItBot;
   }
 
+  public Player(Player other)
+  {
+    id = other.getID();
+    name = other.getName();
+    isItBot = other.getIsItBot();
+  }
+
 
   /**
    * Accessor.
@@ -59,6 +66,28 @@ public class Player
   public String getName()
   {
     return name;
+  }
+
+
+  /**
+   * Accessor.
+   *
+   * @return The status of the player.
+   */
+  public boolean getIsItBot()
+  {
+    return isItBot;
+  }
+
+
+  /**
+   * Accessor.
+   *
+   * @return The combination of the player.
+   */
+  public Combination getCombination()
+  {
+    return combination;
   }
 
 
