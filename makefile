@@ -10,3 +10,6 @@ javac_all:
 
 clean:
 	rm bin/*
+
+open_all:
+	sublime src/* &
