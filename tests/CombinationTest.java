@@ -20,7 +20,7 @@ public class CombinationTest
 {
   public static void main(String[] args) throws Exception
   {
-    Scanner fileScanner = new Scanner(new File("test_data.txt"));
+    Scanner fileScanner = new Scanner(new File(args[0]));
     String[] content = readFromFile(fileScanner);
     int contentLength = content.length;
 
@@ -70,7 +70,7 @@ public class CombinationTest
     }
 
     //We did not exit, so this message can appear
-    System.out.println("Your testing was successfull!");
+    System.out.println("Your combination testing was successfull!");
 
   }//main
 

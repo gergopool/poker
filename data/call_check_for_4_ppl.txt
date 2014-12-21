@@ -1,6 +1,3 @@
-#!/bin/bash
-
-java -classpath ./src Server << EOF
 call
 call
 call
@@ -17,4 +14,3 @@ check
 check
 check
 check
-EOF
