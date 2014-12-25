@@ -8,8 +8,11 @@ call_check_test:
 run:
 	java -cp bin Server
 
-javac_all:
+javac:
 	javac -d bin -cp bin src/*.java
+
+javadoc:
+	javadoc -d doc/javadoc src/*.java
 
 clean:
 	rm bin/*
