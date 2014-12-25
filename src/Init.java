@@ -5,11 +5,11 @@ public class Init
 
   // The number of players who sit down in the beginning
   // It must be at least 2.
-  public static int NUMBER_OF_PLAYERS = 3;
+  public static int NUMBER_OF_PLAYERS = 4;
 
 
   // The number of unreal players, simulated by computer
-  public static int NUMBER_OF_BOTS = 3;
+  public static int NUMBER_OF_BOTS = 4;
 
 
   // The number of coins we give to the players at the beginning of the game

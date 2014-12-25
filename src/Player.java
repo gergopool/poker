@@ -274,7 +274,12 @@ public class Player
    */
   public void raise()
   {
-    int amountOfRaise = Server.askForAmountOfRaise();
+    int amountOfRaise = 0;
+    if (isItBot)
+      amountOfRaise = bot.askForAmountOfRaise();
+    else
+      amountOfRaise = Server.askForAmountOfRaise();
+
     //First give the amount that is left and add then add the amount of raise
     int howMuchLeft = Table.maxPreparedCoins.getAmount()
                                                 - preparedCoins.getAmount();
@@ -293,7 +298,11 @@ public class Player
 
   public void bet()
   {
-    int amountOfBet = Server.askForAmountOfRaise();
+    int amountOfBet = 0;
+    if (isItBot)
+      amountOfBet = bot.askForAmountOfRaise();
+    else
+      amountOfBet = Server.askForAmountOfRaise();
 
     coins.subtract(amountOfBet);
     preparedCoins.add(amountOfBet);
@@ -339,7 +348,8 @@ public class Player
    */
   public boolean ableToBet()
   {
-    return Table.maxPreparedCoins.getAmount() == 0;
+    return Table.maxPreparedCoins.getAmount() == 0
+            && coins.getAmount() > 0;
   }
 
   // ----------------------------------------------------------------
@@ -351,7 +361,8 @@ public class Player
    */
   public boolean ableToRaise()
   {
-    return Table.maxPreparedCoins.getAmount() != 0;
+    return Table.maxPreparedCoins.getAmount() != 0
+            && coins.getAmount() - Table.maxPreparedCoins.getAmount() > 0;
   }
 
 

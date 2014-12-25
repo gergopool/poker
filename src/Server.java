@@ -133,7 +133,15 @@ public class Server
       amount = askForAmountOfRaise();
     }
 
-    // NEED TO ADD WHAT IF HES GOT LESS COINS
+
+    int coinsLeft = Table.players[Table.currentPlayerID].getCoins().getAmount()
+                                         - Table.maxPreparedCoins.getAmount();
+    if (coinsLeft < amount)
+    {
+      System.out.println("This amount is too much for your coins!");
+      amount = askForAmountOfRaise();
+    }
+
 
     if(amount < Table.blind.getAmount())
     {
@@ -156,7 +164,7 @@ public class Server
   public static String askForAction()
   {
     Player thePlayer = Table.players[Table.getProperID(Table.currentPlayerID)];
-    System.out.println(thePlayer + ": ");
+    System.out.print(thePlayer.getName() + ": ");
     String action = Init.INPUT_SCANNER.nextLine();
 
     // Checking if the player is allowed to do the desired action
@@ -194,8 +202,7 @@ public class Server
 
 
         default : System.out.println("This is not an action!");
-                  askForAction();
-                  break;
+                  return askForAction();
       }
 
     return action;

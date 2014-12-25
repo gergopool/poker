@@ -31,10 +31,17 @@ public class Simulation
   {
     double random = Math.random();
     String chosen = "";
-    if (random > 0.7 && owner.ableToCall())
+
+    if (random > 0.9 && owner.ableToBet())
+      chosen = "bet";
+    else if (random > 0.8 && owner.ableToRaise())
+      chosen = "raise";
+    else if (random > 0.7 && owner.ableToCall())
       chosen = "call";
     else if (random > 0.1 && owner.ableToCheck())
       chosen = "check";
+    else if (random < 0.05)
+      chosen = "fold";
     else
       return makeDecision();
 
@@ -56,6 +63,24 @@ public class Simulation
     Combination boardCombination = new Combination(nullCards);
 
     return boardCombination.s_getValue();
+  }
+
+  // ----------------------------------------------------------------
+
+  /**
+   * Gives how many coins the computer desire to raise or bet.
+   *
+   * @return The amount of coins.
+   */
+  public int askForAmountOfRaise()
+  {
+    int coinsLeft = owner.getCoins().getAmount()
+                                         - Table.maxPreparedCoins.getAmount();
+
+    if (coinsLeft < 140)
+      return coinsLeft;
+    else
+      return 140;
   }
 
 }
