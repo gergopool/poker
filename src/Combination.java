@@ -273,10 +273,14 @@ public class Combination
     if (i == noOfCards - 1)
       theHighCards += sorted[i].getRankInHex();
 
+    if (theHighCards.length() != 0)
+        theHighCards = "" + theHighCards.charAt(0);
+    else
+        theHighCards = "0";
+
     //If pair found, we return the appropriate value
     if (pair.length() >= 2)
       {
-      theHighCards = "" + theHighCards.charAt(0);
       return "2" + pair.charAt(0) + pair.charAt(1)
                                       + theHighCards + "00";
       }
@@ -326,13 +330,18 @@ public class Combination
       i++;
     }
 
+    switch (theHighCards.length())
+    {
+      case 0: theHighCards = "00"; break;
+      case 1: theHighCards += "0"; break;
+      default: theHighCards = "" + theHighCards.charAt(0)
+                                 + theHighCards.charAt(1); break;
+    }
+
 
     //If drill found, we return the appropriate value
     if (drill.length() != 0)
-    {
-      theHighCards = "" + theHighCards.charAt(0) + theHighCards.charAt(1);
       return "3" + drill.charAt(0) + "0" + theHighCards + "0";
-    }
       
     return valueWas;
   }
@@ -340,7 +349,7 @@ public class Combination
 
 
 
-  // - - - - - - - - - - - - - - - STRIGHT - - - - - - - - - - - - - - - //
+  // - - - - - - - - - - - - - - - STRAIGHT - - - - - - - - - - - - - - - //
   /**
    * If there is a straight, we change the previous value.
    *
@@ -506,10 +515,15 @@ public class Combination
       i++;
     }
 
+    if (theHighCards.length() != 0)
+        theHighCards = "" + theHighCards.charAt(0);
+    else
+        theHighCards = "0";
+
 
     //If drill found, we return the appropriate value
     if (poker.length() != 0)
-      return "7" + poker + "0" + theHighCards.charAt(0) + "00";
+      return "7" + poker + "0" + theHighCards + "00";
       
 
     return valueWas;
