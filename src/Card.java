@@ -1,5 +1,3 @@
-
-
 /**
  * This class represent the 52 cards on the table, the burnt cards
  * and the cards the players have.
@@ -14,9 +12,11 @@ public class Card
   // The rank of the card
   private final int rank;
 
-
+  // The orer of sorting more cards
   public enum SortOrder {BY_COLOUR, BY_RANK};
 
+
+  // ----------------------------------------------------------------
 
   /**
    * Constructor.
@@ -30,13 +30,41 @@ public class Card
     rank = theRank;
   }
 
+  // ----------------------------------------------------------------
+  // ----------------------------------------------------------------
 
 
+
+
+  /**
+   * Accessor.
+   *
+   * @return The colour of the card in int.
+   */
   public int getColour()
   {
     return colour;
   }
 
+  // ----------------------------------------------------------------
+
+  /**
+   * Accessor.
+   *
+   * @return The rank of the card in int.
+   */
+  public int getRank()
+  {
+    return rank;
+  }
+
+  // ----------------------------------------------------------------
+
+  /**
+   * Accessor.
+   *
+   * @return The rank in hex format.
+   */
   public String getRankInHex()
   {
     String s_rank = "0";
@@ -61,12 +89,15 @@ public class Card
     return s_rank;
   }
 
+  // ----------------------------------------------------------------
+  // ----------------------------------------------------------------
 
-  public int getRank()
-  {
-    return rank;
-  }
-
+  /**
+   * Converts the rank from AceUp to AceDown.
+   * It means Ace will have the value of 1 instead of 14.
+   *
+   * @return The downrounded rank.
+   */
   public int aceDownRank()
   {
     if (rank == 14)
@@ -74,16 +105,47 @@ public class Card
     return rank;
   }
 
+  // ----------------------------------------------------------------
+
+
+  /**
+   * Compares two Card by their colour and investigates wheter they are
+   * equal or not.
+   *
+   * @param other The other card desired to compare.
+   *
+   * @return True/False depending on they have the same colour or not.
+   */
   public boolean sameColour(Card other)
   {
     return colour == other.getColour();
   }
 
+  // ----------------------------------------------------------------
+
+  /**
+   * Compares two Card by their rank and investigates wheter they are
+   * equal or not.
+   *
+   * @param other The other card desired to compare.
+   *
+   * @return True/False depending on they have the same rank or not.
+   */
   public boolean sameRank(Card other)
   {
     return rank == other.getRank();
   }
 
+  // ----------------------------------------------------------------
+
+  /**
+   * Compares two Card.
+   *
+   * @param other The other card desired to compare.
+   * @param order The order of order of comparing (rank or colour).
+   *
+   * @return Their relation in int.
+   */
   public int compareTo(Card other, SortOrder order)
   {
     switch (order)
@@ -105,6 +167,16 @@ public class Card
     
   }
 
+  // ----------------------------------------------------------------
+
+  /**
+   * Compares two Card, but considers the Ace as 1.
+   *
+   * @param other The other card desired to compare.
+   * @param order The order of order of comparing (rank or colour).
+   *
+   * @return Their relation in int.
+   */
   public int compareToAceDown(Card other, SortOrder order)
   {
     switch (order)
@@ -126,6 +198,7 @@ public class Card
     
   }
 
+  // ----------------------------------------------------------------
 
   /**
    * Determines the players value for being a dealer.

@@ -19,6 +19,8 @@ public class Table
   public static Coins blind = new Coins(Init.BLIND_AT_BEGINNING);
 
 
+  // ----------------------------------------------------------------
+
    /**
    * This method defines some players who will play later on.
    * In order to define a player, we need its id, name,
@@ -34,12 +36,13 @@ public class Table
     }
   }
 
+  // ----------------------------------------------------------------
 
   /**
    * Sets up the first dealer and also determines the small
    * and the big blind.
    *
-   * @param theDealer The dealer.
+   * @param theDealerID The dealer's id.
    */
   public static void setDealer(int theDealerID)
   {
@@ -49,8 +52,11 @@ public class Table
     currentPlayerID = getProperID(dealerID + 3);
   }
 
+  // ----------------------------------------------------------------
 
-
+  /**
+   * Shows 3 card on the board.
+   */
   public static void showFlop()
   {
     showCardOnBoard();
@@ -58,13 +64,23 @@ public class Table
     showCardOnBoard();
   }
 
+  // ----------------------------------------------------------------
 
+  /** 
+   * Determines if it is the end of the round.
+   *
+   * @return If the end of the round.
+   */
   public static boolean endOfRound()
   {
     return getNextPlayerID(currentPlayerID) == currentPlayerID;
   }
 
+  // ----------------------------------------------------------------
 
+  /**
+   * Shows a card on the board, on the screen.
+   */
   public static void showCardOnBoard()
   {
     board[noOfCardsOnBoard] = deck.getTop();
@@ -72,15 +88,17 @@ public class Table
     noOfCardsOnBoard++;
   }
 
+  // ----------------------------------------------------------------
 
-
+  /**
+   * Burns a card from the top of the deck.
+   */
   public static void burnCard()
   {
     deck.getTop();
   }
 
-
-
+  // ----------------------------------------------------------------
 
   /**
    * Looks up who the next palyer is gonna be.
@@ -92,8 +110,15 @@ public class Table
       determineNextPlayerID();
   }
 
+  // ----------------------------------------------------------------
 
-
+  /**
+   * Determines the previous player's ID.
+   *
+   * @param idNow The current id.
+   *
+   * @return The id.
+   */
   public static int getPreviousPlayerID(int idNow)
   {
     int previousID = getProperID(idNow - 1);
@@ -103,8 +128,15 @@ public class Table
     return previousID;
   }
 
+  // ----------------------------------------------------------------
 
-
+  /**
+   * Determines the next player's ID.
+   *
+   * @param idNow The current id.
+   *
+   * @return The id.
+   */
   public static int getNextPlayerID(int idNow)
   {
     int nextID = getProperID(idNow + 1);
@@ -114,10 +146,12 @@ public class Table
     return nextID;
   }
 
-
+  // ----------------------------------------------------------------
 
   /**
    * For over Bound execption, we determine the proper id of a big id.
+   *
+   * @param currentID The current id that might be greater than no. of players.
    *
    * @return The proper id.
    */
@@ -126,8 +160,7 @@ public class Table
     return (currentID + Init.NUMBER_OF_PLAYERS) % Init.NUMBER_OF_PLAYERS;
   }
 
-
-
+  // ----------------------------------------------------------------
 
   /**
    * Moving coins from players to the pot.
@@ -144,8 +177,7 @@ public class Table
     maxPreparedCoins.erase();
   }
 
-
-
+  // ----------------------------------------------------------------
 
   /**
    * Prepares the blind's coins and alter the maxPreparedCoins to it.
@@ -158,8 +190,7 @@ public class Table
     maxPreparedCoins = new Coins(blind.getAmount());
   }
 
-
-
+  // ----------------------------------------------------------------
 
   /**
    * A round of game.
@@ -205,17 +236,18 @@ public class Table
     moveCoinsToPot();
   }
 
+  // ----------------------------------------------------------------
 
-
-
+  /**
+   * Refreshes the combination of all players, even on inactive ones.
+   */
   public static void refreshOnPlayersCombinations()
   {
     for(int playerID = 0; playerID < Init.NUMBER_OF_PLAYERS; playerID++)
       players[playerID].refreshCombination();
   }
 
-
-
+  // ----------------------------------------------------------------
 
   /**
    * Shifts the dealer button.
@@ -225,11 +257,12 @@ public class Table
     setDealer(dealerID + 1);
   }
 
-
-
+  // ----------------------------------------------------------------
 
   /**
-   * Returns with the infos of the table.
+   * Asks for the dealer and the blinds.
+   *
+   * @return The blind and the dealers.
    */
   public static String getInfos()
   {
@@ -239,8 +272,15 @@ public class Table
            "  Big blind: " + players[bigBlindID].getName();
   }
 
+  // ----------------------------------------------------------------
 
-
+  /**
+   * Sorts the combination into descending order, by their combination.
+   *
+   * @param thePlayers The unsorted Player array.
+   *
+   * @return The sorted array of players.
+   */
   private static Player[] sortPlayersByCombinationDesc(Player[] thePlayers)
   {
     Player[] somePlayers = new Player[thePlayers.length];
@@ -261,8 +301,11 @@ public class Table
     return somePlayers;
   }
 
+  // ----------------------------------------------------------------
 
-
+  /**
+   * Get the coins of the pot and share them among the winners.
+   */
   public static void shareCoinsAmongWinners()
   {
     Player[] playersInRank = sortPlayersByCombinationDesc(players);
@@ -288,7 +331,15 @@ public class Table
     pot.erase();
   }
 
+  // ----------------------------------------------------------------
 
+  /**
+   * Determines an array of active players, who are still in round.
+   *
+   * @param thePlayer The inactive and active players.
+   *
+   * @return Only the active players.
+   */
   private static Player[] filterOutInactivePlayers(Player[] thePlayers)
   {
     Player[] activePlayers = new Player[thePlayers.length];

@@ -3,6 +3,7 @@ public class Coins
   //The amount of coins
   private int amount;
 
+  // ----------------------------------------------------------------
 
   /**
    * Constuctor
@@ -13,6 +14,11 @@ public class Coins
   {
     amount = theAmount;
   }
+
+  // ----------------------------------------------------------------
+  // ----------------------------------------------------------------
+
+
 
 
   /**
@@ -25,6 +31,7 @@ public class Coins
     return amount;
   }
 
+  // ----------------------------------------------------------------
 
   /**
    * Add some coins to the amount.
@@ -36,6 +43,7 @@ public class Coins
     amount += howMany;
   }
 
+  // ----------------------------------------------------------------
 
   /**
    * Make the number of coins 0.
@@ -45,6 +53,7 @@ public class Coins
     amount = 0;
   }
 
+  // ----------------------------------------------------------------
 
   /**
    * Subtract some coins to the amount.

@@ -3,7 +3,7 @@
 public class Combination
 {
   //The value of the combination
-  private String value;
+  private String value = "000000";
 
   //Every card
   private Card[] allCards = new Card[7];
@@ -11,19 +11,32 @@ public class Combination
   //The number of cards
   private int noOfCards = 0;
 
+  // ----------------------------------------------------------------
 
+  /**
+   * Constructor/
+   *
+   * @param someCards The cards desired to add next to the board.
+   *                  Usually it means the hand of the player.
+   */
   public Combination(Card[] someCards)
   {
     noOfCards = someCards.length + Table.noOfCardsOnBoard;
-    int i;
+    int i, j;
 
     for (i = 0; i < someCards.length; i++)
       allCards[i] = someCards[i];
-    for (int j = 0; j < Table.noOfCardsOnBoard; j++)
+    for (j = 0; j < Table.noOfCardsOnBoard; j++)
       allCards[i + j] = Table.board[j];
 
-    determineCombination();
+    if (i + j != 0)
+      determineCombination();
   }
+
+  // ----------------------------------------------------------------
+  // ----------------------------------------------------------------
+
+
 
   /**
    * Accessor.
@@ -35,8 +48,12 @@ public class Combination
     return value;
   }
 
+  // ----------------------------------------------------------------
+
   /**
    * Get name of the combination
+   *
+   * @return The name of the combination.
    */
   private String getName()
   {
@@ -60,8 +77,16 @@ public class Combination
     return name;
   }
 
+
+
+  //---------------------------------------------------------------/
+  /************************* COMBINATIONS *************************/
+  //---------------------------------------------------------------/
+
   /**
-   * Updating the value.
+   * Updating the value of this combination.
+   * We go through of every possible combination and
+   * if there is a higher, we update the old one.
    */
   public void determineCombination()
   {
@@ -79,91 +104,7 @@ public class Combination
     value = changeIf_RoyalFlush(value);
   }
 
-  private Card[] sortCardsDesc(Card.SortOrder sortBy, boolean aceDown)
-  {
-    int i, j;
-    Card[] sortedArray = new Card[noOfCards];
-    for (i = 0; i < noOfCards; i++)
-      sortedArray[i] = allCards[i];
-
-    if (!aceDown)
-    {
-
-      for(i = 0; i < noOfCards - 1; i++)
-        for (j = i + 1; j < noOfCards; j++)
-          if (sortedArray[i].compareTo(sortedArray[j], sortBy) < 0)
-          {
-            Card temp = sortedArray[i];
-            sortedArray[i] = sortedArray[j];
-            sortedArray[j] = temp;
-          }
-    }
-    else
-    {
-
-      for(i = 0; i < noOfCards - 1; i++)
-        for (j = i + 1; j < noOfCards; j++)
-          if (sortedArray[i].compareToAceDown(sortedArray[j], sortBy) < 0)
-          {
-            Card temp = sortedArray[i];
-            sortedArray[i] = sortedArray[j];
-            sortedArray[j] = temp;
-          }
-    }
-        
-    return sortedArray;
-  }
-
-
-  private Card[] makeUniqueInRanks(Card[] cards)
-  {
-    int noOfUniqueCards = 1;
-    for(int i = 1; i < cards.length; i++)
-      if (cards[i].getRank() != cards[i - 1].getRank())
-        noOfUniqueCards++;
-
-    Card[] unique = new Card[noOfUniqueCards];
-    unique[0] = cards[0];
-    int counter = 1;
-    for(int i = 1; i < cards.length; i++)
-      if (cards[i].getRank() != cards[i - 1].getRank())
-      {
-        unique[counter] = cards[i];
-        counter++;
-      }
-
-   return unique;
-  }
-
-
-  private int hexToInt(char hex)
-  {
-    String s_hex = "" + hex;
-    int result = Integer.parseInt(s_hex, 16);
-    if (result == 1)
-      return 14;
-
-    return result;
-  }
-
-  private char intToHex(int n)
-  {
-    if (n == 1)
-      n = 14;
-    return Integer.toHexString(n).toUpperCase().charAt(0);
-  }
-
-
-  public int compareTo(Combination other)
-  {
-    int valueOfThis = Integer.parseInt(value, 16);
-    int valueOfOther = Integer.parseInt(other.s_getValue(), 16);
-
-    return valueOfThis - valueOfOther;
-  }
-
-
-  /************************* COMBINATIONS *************************/
+  // ----------------------------------------------------------------
 
   /**
    * Determines the highest cards out of the given cards
@@ -195,6 +136,8 @@ public class Combination
    * If there is a pair, we change the previous value.
    *
    * @param valueWas What the current value is before calling method.
+   *
+   * @return The value that might have been changed.
    */
   private String changeIf_Pair(String valueWas)
   {
@@ -244,6 +187,8 @@ public class Combination
    * If there are two pairs, we change the previous value.
    *
    * @param valueWas What the current value is before calling method.
+   *
+   * @return The value that might have been changed.
    */
   private String changeIf_TwoPairs(String valueWas)
   {
@@ -297,6 +242,8 @@ public class Combination
    * If there is a drill, we change the previous value.
    *
    * @param valueWas What the current value is before calling method.
+   *
+   * @return The value that might have been changed.
    */
   public String changeIf_Drill(String valueWas)
   {
@@ -354,6 +301,8 @@ public class Combination
    * If there is a straight, we change the previous value.
    *
    * @param valueWas What the current value is before calling method.
+   *
+   * @return The value that might have been changed.
    */
   private String changeIf_Straigh(String valueWas, boolean aceDown)
   {
@@ -385,6 +334,8 @@ public class Combination
    * If there is a flush, we change the previous value.
    *
    * @param valueWas What the current value is before calling method.
+   *
+   * @return The value that might have been changed.
    */
   private String changeIf_Flush(String valueWas, boolean aceDown)
   {
@@ -416,6 +367,8 @@ public class Combination
    * If there is a full, we change the previous value.
    *
    * @param valueWas What the current value is before calling method.
+   *
+   * @return The value that might have been changed.
    */
   private String changeIf_FullHouse(String valueWas)
   {
@@ -477,6 +430,8 @@ public class Combination
    * If there is a poker, we change the previous value.
    *
    * @param valueWas What the current value is before calling method.
+   *
+   * @return The value that might have been changed.
    */
   private String changeIf_Poker(String valueWas)
   {
@@ -538,6 +493,8 @@ public class Combination
    * If there is a straight flush, we change the previous value.
    *
    * @param valueWas What the current value is before calling method.
+   *
+   * @return The value that might have been changed.
    */
   public String changeIf_StraightFlush(String valueWas)
   {
@@ -579,6 +536,8 @@ public class Combination
    * If there is a royal flush, we change the previous value.
    *
    * @param valueWas What the current value is before calling method.
+   *
+   * @return The value that might have been changed.
    */
   public String changeIf_RoyalFlush(String valueWas)
   {
@@ -588,8 +547,144 @@ public class Combination
   }
 
 
+  // -------------------------------------------------------------------
+  // -------------------------- OTHER METHODS --------------------------
+  // -------------------------------------------------------------------
 
 
+
+  /**
+   * Sorts cards into descending order.
+   *
+   * @param soryBy The variable we sort the the cards upon.
+   * @param aceDown Boolean if the ace is considered as 1 or 14.
+   *
+   * @return The cards in the proper order.
+   */
+  private Card[] sortCardsDesc(Card.SortOrder sortBy, boolean aceDown)
+  {
+    int i, j;
+    Card[] sortedArray = new Card[noOfCards];
+    for (i = 0; i < noOfCards; i++)
+      sortedArray[i] = allCards[i];
+
+    if (!aceDown)
+    {
+
+      for(i = 0; i < noOfCards - 1; i++)
+        for (j = i + 1; j < noOfCards; j++)
+          if (sortedArray[i].compareTo(sortedArray[j], sortBy) < 0)
+          {
+            Card temp = sortedArray[i];
+            sortedArray[i] = sortedArray[j];
+            sortedArray[j] = temp;
+          }
+    }
+    else
+    {
+
+      for(i = 0; i < noOfCards - 1; i++)
+        for (j = i + 1; j < noOfCards; j++)
+          if (sortedArray[i].compareToAceDown(sortedArray[j], sortBy) < 0)
+          {
+            Card temp = sortedArray[i];
+            sortedArray[i] = sortedArray[j];
+            sortedArray[j] = temp;
+          }
+    }
+        
+    return sortedArray;
+  }
+
+  // ----------------------------------------------------------------
+
+  /**
+   * Asks for some cards and in case of it has more cards with the same rank,
+   * it deletes the same ranked cards and keeps only one.
+   *
+   * @oaram The cards that might have more cards with the same rank.
+   *
+   * @return The unique ranked cards.
+   */
+  private Card[] makeUniqueInRanks(Card[] cards)
+  {
+    int noOfUniqueCards = 1;
+    for(int i = 1; i < cards.length; i++)
+      if (cards[i].getRank() != cards[i - 1].getRank())
+        noOfUniqueCards++;
+
+    Card[] unique = new Card[noOfUniqueCards];
+    unique[0] = cards[0];
+    int counter = 1;
+    for(int i = 1; i < cards.length; i++)
+      if (cards[i].getRank() != cards[i - 1].getRank())
+      {
+        unique[counter] = cards[i];
+        counter++;
+      }
+
+   return unique;
+  }
+
+  // ----------------------------------------------------------------
+
+  /**
+   * Converts q hex number into decimal. If it is ace in down (1),
+   * it rounds up to 14.
+   *
+   * @param hex The char in hex format.
+   *
+   * @return The value of the char in decimal.
+   */
+  private int hexToInt(char hex)
+  {
+    String s_hex = "" + hex;
+    int result = Integer.parseInt(s_hex, 16);
+    if (result == 1)
+      return 14;
+
+    return result;
+  }
+
+  // ----------------------------------------------------------------
+
+  /**
+   * Converts decimal number to hex. The number should be between 0 and 15
+   * exclusive, other values are not reachable.
+   *
+   * @oaram n The number.
+   *
+   * @return The hex format of the number.
+   */
+  private char intToHex(int n)
+  {
+    if (n == 1)
+      n = 14;
+    return Integer.toHexString(n).toUpperCase().charAt(0);
+  }
+
+  // ----------------------------------------------------------------
+
+  /**
+   * Compares two combination by their value.
+   *
+   * @param other The other combination.
+   *
+   * @return The relationship of the two combinations in int.
+   */
+  public int compareTo(Combination other)
+  {
+    int valueOfThis = Integer.parseInt(value, 16);
+    int valueOfOther = Integer.parseInt(other.s_getValue(), 16);
+
+    return valueOfThis - valueOfOther;
+  }
+
+  /**
+   * Converts the combination into readable format.
+   *
+   * @return The combination in String format.
+   */
   public String toString()
   {
     return "[" + getName() + ": " + value + "]";

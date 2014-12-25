@@ -1,7 +1,8 @@
 import java.util.Scanner;
 
 /**
- * This is the server of the poker program.
+ * This is the server of the poker program. It is only responsible for the
+ * inputs and outputs.
  *
  * @author Gergely Papp
  */
@@ -57,8 +58,8 @@ public class Server
   }//main
 
 
-
-
+  // ----------------------------------------------------------------
+  // ----------------------------------------------------------------
 
 
   /**
@@ -82,12 +83,7 @@ public class Server
     Table.setDealer(winner.getID());
   }
 
-
-  private static boolean endOfGame()
-  {
-    return false;
-  }
-
+  // ----------------------------------------------------------------
 
   /**
    * Dealing cards among the players in the form of the real game.
@@ -100,12 +96,19 @@ public class Server
                                        .setCard(Table.deck.getTop(), round);
   }
 
+  // ----------------------------------------------------------------
 
-
+  /**
+   * Shows a card on the screen.
+   *
+   * @param card The card desired to show.
+   */
   public static void showCard(Card card)
   {
     System.out.println(card);
   }
+
+  // ----------------------------------------------------------------
 
 
   /**
@@ -141,6 +144,7 @@ public class Server
     return amount;
   }
 
+  // ----------------------------------------------------------------
 
   /**
    * The players has different action when they "speak".

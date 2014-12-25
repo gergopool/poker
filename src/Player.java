@@ -42,12 +42,11 @@ public class Player
     isItBot = theIsItBot;
   }
 
-  public Player(Player other)
-  {
-    id = other.getID();
-    name = other.getName();
-    isItBot = other.getIsItBot();
-  }
+
+  // ----------------------------------------------------------------
+  //   ACCESSORS --->
+  // ----------------------------------------------------------------
+
 
 
   /**
@@ -60,6 +59,7 @@ public class Player
     return id;
   }
 
+  // ----------------------------------------------------------------
 
   /**
    * Accessor.
@@ -71,6 +71,7 @@ public class Player
     return name;
   }
 
+  // ----------------------------------------------------------------
 
   /**
    * Accessor.
@@ -82,6 +83,7 @@ public class Player
     return isItBot;
   }
 
+  // ----------------------------------------------------------------
 
   /**
    * Accessor.
@@ -93,6 +95,7 @@ public class Player
     return combination;
   }
 
+  // ----------------------------------------------------------------
 
   /**
    * Accessor.
@@ -104,6 +107,7 @@ public class Player
     return inRound;
   }
 
+  // ----------------------------------------------------------------
 
   /**
    * Accessor.
@@ -115,25 +119,7 @@ public class Player
     return bot;
   }
 
-
-  /**
-   * Sets the inRound to true.
-   * Needed to start a new round.
-   */
-  public void beInRound()
-  {
-    inRound = true;
-  }
-
-  /**
-   * Sets the inRound to false.
-   * Needed to jump over this user during the game.
-   */
-  public void beNotInRound()
-  {
-    inRound = false;
-  }
-
+  // ----------------------------------------------------------------
 
   /**
    * Accessor.
@@ -145,6 +131,8 @@ public class Player
     return hand;
   }
 
+  // ----------------------------------------------------------------
+
   /**
    * Accessor.
    *
@@ -155,13 +143,7 @@ public class Player
     return coins;
   }
 
-  /**
-   * Mutator.
-   */
-  public void refreshCombination()
-  {
-    combination = new Combination(hand);
-  }
+  // ----------------------------------------------------------------
 
   /**
    * Accessor.
@@ -173,6 +155,45 @@ public class Player
     return preparedCoins;
   }
 
+
+
+  // ----------------------------------------------------------------
+  //   MUTATORS --->
+  // ----------------------------------------------------------------
+
+
+  /**
+   * Sets the inRound to true.
+   * Needed to start a new round.
+   */
+  public void beInRound()
+  {
+    inRound = true;
+  }
+
+  // ----------------------------------------------------------------
+
+  /**
+   * Sets the inRound to false.
+   * Needed to jump over this user during the game.
+   */
+  public void beNotInRound()
+  {
+    inRound = false;
+  }
+
+  // ----------------------------------------------------------------
+
+  /**
+   * Refreshes on the combination. It is needed right after a
+   * new card is shown on the board.
+   */
+  public void refreshCombination()
+  {
+    combination = new Combination(hand);
+  }
+
+  // ----------------------------------------------------------------
 
   /**
    * Moves a specific amount of coins from the ones in front of
@@ -187,6 +208,7 @@ public class Player
     preparedCoins.add(howMany);
   }
 
+  // ----------------------------------------------------------------
 
   /**
    * Set a card into the hand of the user
@@ -198,6 +220,13 @@ public class Player
   {
     hand[place] = card;
   }
+
+
+
+  // ----------------------------------------------------------------
+  //   THE ACTIONS OF A USER --->
+  // ----------------------------------------------------------------
+
 
 
   /**
@@ -216,6 +245,8 @@ public class Player
     preparedCoins.add(howMuchLeft);
   }
 
+  // ----------------------------------------------------------------
+
   /**
    * Action: Check
    * The player hand over the action.
@@ -223,6 +254,8 @@ public class Player
   public void check()
   {
   }
+
+  // ----------------------------------------------------------------
 
   /**
    * Action: Fold
@@ -233,6 +266,7 @@ public class Player
     inRound = false;
   }
 
+  // ----------------------------------------------------------------
 
   /**
    * Action: Raise
@@ -254,6 +288,8 @@ public class Player
     Table.lastSpeakerID = Table.getPreviousPlayerID(id);
   }
 
+  // ----------------------------------------------------------------
+
 
   public void bet()
   {
@@ -265,6 +301,64 @@ public class Player
     Table.maxPreparedCoins.add(amountOfBet);
     Table.lastSpeakerID = Table.getPreviousPlayerID(id);
   }
+
+  // ----------------------------------------------------------------
+  // ----------------------------------------------------------------
+
+
+  /**
+   * Returns wheter the player is able to check or not.
+   *
+   * @return The ability.
+   */
+  public boolean ableToCheck()
+  {
+    return Table.maxPreparedCoins.getAmount()
+                              == preparedCoins.getAmount();
+  }
+
+  // ----------------------------------------------------------------
+
+  /**
+   * Returns wheter the player is able to call or not.
+   *
+   * @return The ability.
+   */
+  public boolean ableToCall()
+  {
+    return Table.maxPreparedCoins.getAmount()
+                              != preparedCoins.getAmount();
+  }
+
+  // ----------------------------------------------------------------
+
+  /**
+   * Returns wheter the player is able to bet or not.
+   *
+   * @return The ability.
+   */
+  public boolean ableToBet()
+  {
+    return Table.maxPreparedCoins.getAmount() == 0;
+  }
+
+  // ----------------------------------------------------------------
+
+  /**
+   * Returns wheter the player is able to raise or not.
+   *
+   * @return The ability.
+   */
+  public boolean ableToRaise()
+  {
+    return Table.maxPreparedCoins.getAmount() != 0;
+  }
+
+
+
+  // ----------------------------------------------------------------
+  //   CONVERTERS --->
+  // ----------------------------------------------------------------
 
 
 
@@ -281,33 +375,18 @@ public class Player
                          combination, isInRoundToString());
   }
 
+  // ----------------------------------------------------------------
+
+  /**
+   * Converts isInRound to string.
+   * It's + if it is in round, - if not.
+   *
+   * @return The representer char.
+   */
   private String isInRoundToString()
   {
     return inRound ? "+" : "-";
   }
 
-
-
-  public boolean ableToCheck()
-  {
-    return Table.maxPreparedCoins.getAmount()
-                              == preparedCoins.getAmount();
-  }
-
-  public boolean ableToCall()
-  {
-    return Table.maxPreparedCoins.getAmount()
-                              != preparedCoins.getAmount();
-  }
-
-  public boolean ableToBet()
-  {
-    return Table.maxPreparedCoins.getAmount() == 0;
-  }
-
-  public boolean ableToRaise()
-  {
-    return Table.maxPreparedCoins.getAmount() != 0;
-  }
 
 }

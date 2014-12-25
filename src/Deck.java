@@ -16,8 +16,10 @@ public class Deck
   //The card from the top of the deck
   private int topID = 51;
 
+  // ----------------------------------------------------------------
+
   /**
-   * Constructor
+   * Constructor. It creates all the 52 cards in the deck.
    */
   public Deck()
   {
@@ -28,8 +30,13 @@ public class Deck
         cards.add(new Card(colour, rank));
   }
 
+  // ----------------------------------------------------------------
+  // ----------------------------------------------------------------
+
+
+
   /**
-   * Randomizing the cards.
+   * Randomizing the cards in the deck.
    */
   public void shuffle()
   {
@@ -37,11 +44,16 @@ public class Deck
     Collections.shuffle(cards);
   }
 
+  // ----------------------------------------------------------------
+
   /**
    * Accessor for the top card of the deck.
+   *
+   * @return The top card of the deck.
    */
   public Card getTop()
   {
     return cards.get(topID--);
   }
+
 }
