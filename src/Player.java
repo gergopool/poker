@@ -24,6 +24,9 @@ public class Player
   // Activity in the current round
   private boolean inRound = true;
 
+  // The simulation in case of the player is a bot
+  private Simulation bot = new Simulation(this);
+
 
   /**
    * Constructor.
@@ -100,6 +103,18 @@ public class Player
   {
     return inRound;
   }
+
+
+  /**
+   * Accessor.
+   *
+   * @return The simulation of the player.
+   */
+  public Simulation getSimulation()
+  {
+    return bot;
+  }
+
 
   /**
    * Sets the inRound to true.
@@ -261,10 +276,38 @@ public class Player
   public String toString()
   {
     return String.format("%02d %-" + Init.MAX_LENGTH_OF_NAME +
-                         "s [%-4s %-4s] (%d) %s",
+                         "s [%-4s %-4s] (%d) %s %s",
                          id, name, hand[0], hand[1], coins.getAmount(),
-                         combination);
+                         combination, isInRoundToString());
   }
 
+  private String isInRoundToString()
+  {
+    return inRound ? "+" : "-";
+  }
+
+
+
+  public boolean ableToCheck()
+  {
+    return Table.maxPreparedCoins.getAmount()
+                              == preparedCoins.getAmount();
+  }
+
+  public boolean ableToCall()
+  {
+    return Table.maxPreparedCoins.getAmount()
+                              != preparedCoins.getAmount();
+  }
+
+  public boolean ableToBet()
+  {
+    return Table.maxPreparedCoins.getAmount() == 0;
+  }
+
+  public boolean ableToRaise()
+  {
+    return Table.maxPreparedCoins.getAmount() != 0;
+  }
 
 }

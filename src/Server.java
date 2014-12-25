@@ -10,7 +10,7 @@ public class Server
   public static void main(String[] args)
   {
     //Basic preparaion
-    sitPlayersDown();
+    Table.sitPlayersDown();
     Table.deck = new Deck();
 
     determineFirstDealer();
@@ -46,32 +46,19 @@ public class Server
       Table.shareCoinsAmongWinners();
     }
 
-    /*
+    
     // Some infos to the developer. It's just not here
     System.out.println();
     for (int i = 0; i < Init.NUMBER_OF_PLAYERS; i++)
       System.out.println(Table.players[i]);
     System.out.println(Table.getInfos());
-    */
+    
 
   }//main
 
 
 
 
-
-
-  /**
-   * This method defines some players who will play later on.
-   * In order to define a player, we need its id, name,
-   * and wheter if it is bot or not.
-   */
-  private static void sitPlayersDown()
-  {
-    Table.players = new Player[Init.NUMBER_OF_PLAYERS];
-    for(int id = 0; id < Init.NUMBER_OF_PLAYERS; id++)
-      Table.players[id] = new Player(id, "Name_" + id, false);
-  }
 
 
   /**
@@ -171,30 +158,28 @@ public class Server
     // Checking if the player is allowed to do the desired action
     switch(action.toLowerCase())
       {
-        case "check" : if (Table.maxPreparedCoins.getAmount()
-                              != thePlayer.getPreparedCoins().getAmount())
+        case "check" : if (!thePlayer.ableToCheck())
                        {
                           System.out.println("You cannot check now!");
                           return askForAction();
                        }
                        break;
 
-        case "call"  : if (Table.maxPreparedCoins.getAmount()
-                              == thePlayer.getPreparedCoins().getAmount())
+        case "call"  : if (!thePlayer.ableToCall())
                        {
                           System.out.println("You cannot call now!");
                           return askForAction();
                        }
                        break;
 
-        case "bet"   : if (Table.maxPreparedCoins.getAmount() != 0)
+        case "bet"   : if (!thePlayer.ableToBet())
                        {
                           System.out.println("You cannot bet now!");
                           return askForAction();
                        }
                        break;
 
-        case "raise" : if (Table.maxPreparedCoins.getAmount() == 0)
+        case "raise" : if (!thePlayer.ableToRaise())
                        {
                           System.out.println("You cannot raise now!");
                           return askForAction();

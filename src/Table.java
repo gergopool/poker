@@ -19,6 +19,22 @@ public class Table
   public static Coins blind = new Coins(Init.BLIND_AT_BEGINNING);
 
 
+   /**
+   * This method defines some players who will play later on.
+   * In order to define a player, we need its id, name,
+   * and wheter if it is bot or not.
+   */
+  public static void sitPlayersDown()
+  {
+    players = new Player[Init.NUMBER_OF_PLAYERS];
+    for(int id = 0; id < Init.NUMBER_OF_PLAYERS; id++)
+    {
+      boolean bot = id < Init.NUMBER_OF_BOTS;
+      players[id] = new Player(id, "Name_" + id, bot);
+    }
+  }
+
+
   /**
    * Sets up the first dealer and also determines the small
    * and the big blind.
@@ -158,13 +174,17 @@ public class Table
     lastSpeakerID = getPreviousPlayerID(currentPlayerID);
 
     do
-    {     
-      action = Server.askForAction();
+    {
+      // Asking fr action from player or bot
+      if (players[currentPlayerID].getIsItBot())
+        action = players[currentPlayerID].getSimulation().makeDecision();
+      else
+        action = Server.askForAction();
 
-      //Passing the action to the player
+      // Passing the action to the player
       switch(action.toLowerCase())
       {
-        //Cases
+        // Cases
         case "check" : players[currentPlayerID].check(); break;
         case "call"  : players[currentPlayerID].call(); break;
         case "bet"   : players[currentPlayerID].bet(); break;
@@ -246,11 +266,12 @@ public class Table
   public static void shareCoinsAmongWinners()
   {
     Player[] playersInRank = sortPlayersByCombinationDesc(players);
+    playersInRank = filterOutInactivePlayers(playersInRank);
     int noOfWinners = 0;
 
     do
     { noOfWinners++; }
-    while(noOfWinners < players.length
+    while(noOfWinners < playersInRank.length
           && playersInRank[noOfWinners].getCombination().compareTo
                       (playersInRank[noOfWinners - 1].getCombination()) == 0);
 
@@ -266,4 +287,27 @@ public class Table
 
     pot.erase();
   }
+
+
+  private static Player[] filterOutInactivePlayers(Player[] thePlayers)
+  {
+    Player[] activePlayers = new Player[thePlayers.length];
+    int noOfActivePlayers = 0;
+
+    for (int i = 0; i < thePlayers.length; i++)
+      if (thePlayers[i].isInRound())
+      {
+        activePlayers[noOfActivePlayers] = thePlayers[i];
+        noOfActivePlayers++;
+      }
+
+    Player[] correctSizedPlayers = new Player[noOfActivePlayers];
+    for (int i = 0; i< noOfActivePlayers; i++)
+      correctSizedPlayers[i] = activePlayers[i];
+
+
+    return correctSizedPlayers;
+  }
+
+
 }
