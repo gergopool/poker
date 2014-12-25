@@ -301,6 +301,7 @@ public class Combination
    * If there is a straight, we change the previous value.
    *
    * @param valueWas What the current value is before calling method.
+   * @param aceDown Ace is upper the king or downer the 2.
    *
    * @return The value that might have been changed.
    */
@@ -334,6 +335,7 @@ public class Combination
    * If there is a flush, we change the previous value.
    *
    * @param valueWas What the current value is before calling method.
+   * @param aceDown Ace is upper the king or downer the 2.
    *
    * @return The value that might have been changed.
    */
@@ -556,7 +558,7 @@ public class Combination
   /**
    * Sorts cards into descending order.
    *
-   * @param soryBy The variable we sort the the cards upon.
+   * @param sortBy The variable we sort the the cards upon.
    * @param aceDown Boolean if the ace is considered as 1 or 14.
    *
    * @return The cards in the proper order.
@@ -602,7 +604,7 @@ public class Combination
    * Asks for some cards and in case of it has more cards with the same rank,
    * it deletes the same ranked cards and keeps only one.
    *
-   * @oaram The cards that might have more cards with the same rank.
+   * @param cards The cards that might have more cards with the same rank.
    *
    * @return The unique ranked cards.
    */
@@ -652,7 +654,7 @@ public class Combination
    * Converts decimal number to hex. The number should be between 0 and 15
    * exclusive, other values are not reachable.
    *
-   * @oaram n The number.
+   * @param n The number.
    *
    * @return The hex format of the number.
    */

@@ -336,7 +336,7 @@ public class Table
   /**
    * Determines an array of active players, who are still in round.
    *
-   * @param thePlayer The inactive and active players.
+   * @param thePlayers The inactive and active players.
    *
    * @return Only the active players.
    */

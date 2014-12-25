@@ -12,7 +12,7 @@ javac:
 	javac -d bin -cp bin src/*.java
 
 javadoc:
-	javadoc -d doc/javadoc src/*.java
+	javadoc -private -d doc/javadoc src/*.java
 
 clean:
 	rm bin/*
