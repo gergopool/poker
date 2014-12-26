@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.io.File;
 
 /**
  * This is the server of the poker program. It is only responsible for the
@@ -207,5 +208,56 @@ public class Server
 
     return action;
   }
+
+  // ----------------------------------------------------------------
+
+  /**
+   * This method returns with the content of a file.
+   *
+   * @param scanner The file scanner to the file.
+   *
+   * @return The content of the file in String[].
+   */
+  public static String[] readFromFile(String fileName) throws Exception
+  {
+    Scanner scanner = new Scanner(new File(fileName));
+
+    int INITAL_ARRAY_SIZE = 2;
+    int ARRAY_RESIZE_FACTOR = 2;
+
+    //The content of the file the method returns
+    String[] fileContent = new String[INITAL_ARRAY_SIZE];
+
+    int numberOfLines = 0;
+    while(scanner.hasNextLine())
+    {
+      //Read in one line from the file
+      String currentLine = scanner.nextLine();
+
+      //If the array is too small, extend it
+      if(fileContent.length == numberOfLines)
+      {
+        String[] biggerArray =
+                       new String[fileContent.length * ARRAY_RESIZE_FACTOR];
+        for(int index = 0; index < fileContent.length; index++)
+          biggerArray[index] = fileContent[index];
+
+        fileContent = biggerArray;
+      }
+
+      //Add the current line to the content and increase the number of lines
+      fileContent[numberOfLines] = currentLine;
+      numberOfLines++;
+    }
+
+    //Returning with the correct size of the array
+    String[] returnArray = new String[numberOfLines];
+    for(int index = 0; index < numberOfLines; index++)
+          returnArray[index] = fileContent[index];
+
+
+    return returnArray;
+  }
+
 
 }

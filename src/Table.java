@@ -5,6 +5,7 @@ public class Table
   public static Deck deck;
   public static Card[] board = new Card[5];
   public static int noOfCardsOnBoard;
+  public static int noOfActivePlayers = Init.NUMBER_OF_PLAYERS;
 
   //Positions
   public static int dealerID;
@@ -343,19 +344,20 @@ public class Table
   private static Player[] filterOutInactivePlayers(Player[] thePlayers)
   {
     Player[] activePlayers = new Player[thePlayers.length];
-    int noOfActivePlayers = 0;
+    int theNoOfActivePlayers = 0;
 
     for (int i = 0; i < thePlayers.length; i++)
       if (thePlayers[i].isInRound())
       {
-        activePlayers[noOfActivePlayers] = thePlayers[i];
-        noOfActivePlayers++;
+        activePlayers[theNoOfActivePlayers] = thePlayers[i];
+        theNoOfActivePlayers++;
       }
 
-    Player[] correctSizedPlayers = new Player[noOfActivePlayers];
-    for (int i = 0; i< noOfActivePlayers; i++)
+    Player[] correctSizedPlayers = new Player[theNoOfActivePlayers];
+    for (int i = 0; i< theNoOfActivePlayers; i++)
       correctSizedPlayers[i] = activePlayers[i];
 
+    noOfActivePlayers = theNoOfActivePlayers;
 
     return correctSizedPlayers;
   }
