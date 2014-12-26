@@ -11,6 +11,9 @@ public class Server
 {
   public static void main(String[] args)
   {
+    Gui gui = new Gui();
+    gui.createAndShowGUI();
+
     //Basic preparaion
     Table.sitPlayersDown();
     Table.deck = new Deck();
